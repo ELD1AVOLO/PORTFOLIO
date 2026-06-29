@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Yahya Elmoussaif — Data Scientist & AI Engineer. Projets IA/ML, expériences, compétences et certifications." />
+  <title>Yahya Elmoussaif — Data Scientist & AI Engineer</title>
+
+  <!-- Polices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css?v=13" />
+</head>
+<body>
+  <!-- Barre de progression de lecture -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Overlay global : éclairs qui suivent la souris (toute la page) -->
+  <canvas class="fx-canvas" id="fxCanvas"></canvas>
+
+  <!-- ======================= NAV ======================= -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav__logo">
+      <span class="nav__bolt">⚡</span> Yahya&nbsp;Elmoussaif
+    </a>
+    <nav class="nav__links">
+      <a href="#about">À propos</a>
+      <a href="#experience">Expérience</a>
+      <a href="#projects">Projets</a>
+      <a href="#skills">Compétences</a>
+      <a href="#education">Formation</a>
+      <a href="#connect">Contact</a>
+    </nav>
+    <div class="nav__right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème" title="Thème clair / sombre">
+        <span class="theme-toggle__icon">🌙</span>
+      </button>
+      <button class="nav__burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="hero" id="hero">
+    <canvas class="hero__canvas" id="heroCanvas"></canvas>
+    <div class="hero__inner">
+      <span class="hero__badge">
+        <span class="hero__badge-dot"></span> Disponible — PFE &amp; opportunités IA
+      </span>
+      <p class="hero__kicker">
+        <span class="hero__prompt">~/yahya</span>
+        <span class="hero__rotator" id="heroRotator"></span><span class="hero__caret"></span>
+      </p>
+      <h1 class="hero__title">
+        Salut, moi c'est <span class="grad">Yahya</span>.<br />
+        Je construis de l'<span class="flash">IA</span> qui passe en prod.
+      </h1>
+      <p class="hero__sub">
+        Élève-ingénieur en Intelligence Artificielle &amp; Big Data à l'ISGA (Rabat).
+        Du modèle à l'interface : pipelines ML, LLMs et applications web déployées
+        en production.
+      </p>
+      <div class="hero__cta">
+        <a href="#projects" class="btn btn--primary magnetic">Voir mes projets</a>
+        <a href="#connect" class="btn btn--ghost magnetic">Me contacter</a>
+        <a href="https://github.com/ELD1AVOLO" target="_blank" rel="noopener" class="btn btn--ghost magnetic">GitHub ↗</a>
+      </div>
+      <ul class="hero__stats" id="heroStats">
+        <li><strong data-count="5" data-suffix="+">0</strong><span>Expériences pro</span></li>
+        <li><strong data-count="10" data-suffix="+">0</strong><span>Projets livrés</span></li>
+        <li><strong data-count="6">0</strong><span>Certifications</span></li>
+        <li><strong data-count="3">0</strong><span>Langues</span></li>
+      </ul>
+    </div>
+    <a href="#about" class="hero__scroll" aria-label="Descendre">
+      <span></span>
+    </a>
+  </section>
+
+  <!-- ======================= BANDEAU TECH (marquee) ======================= -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__fade marquee__fade--l"></div>
+    <div class="marquee__fade marquee__fade--r"></div>
+    <div class="marquee__track">
+      <span>Python</span><span>PyTorch</span><span>TensorFlow</span><span>LightGBM</span>
+      <span>Transformers</span><span>LangChain</span><span>FinBERT</span><span>RAG</span>
+      <span>React</span><span>TypeScript</span><span>Spring Boot</span><span>Flask</span>
+      <span>FastAPI</span><span>Docker</span><span>Kubernetes</span><span>PostgreSQL</span>
+      <span>Oracle Cloud</span><span>AWS</span><span>MLflow</span><span>Kafka</span>
+      <!-- duplicata pour boucle continue -->
+      <span>Python</span><span>PyTorch</span><span>TensorFlow</span><span>LightGBM</span>
+      <span>Transformers</span><span>LangChain</span><span>FinBERT</span><span>RAG</span>
+      <span>React</span><span>TypeScript</span><span>Spring Boot</span><span>Flask</span>
+      <span>FastAPI</span><span>Docker</span><span>Kubernetes</span><span>PostgreSQL</span>
+      <span>Oracle Cloud</span><span>AWS</span><span>MLflow</span><span>Kafka</span>
+    </div>
+  </div>
+
+  <!-- ======================= ABOUT ======================= -->
+  <section class="about" id="about">
+    <div class="section__head">
+      <span class="section__no">01</span>
+      <h2 class="section__title">À propos</h2>
+    </div>
+    <div class="about__grid">
+      <div class="about__bio">
+        <p>
+          Je suis <strong>Yahya Elmoussaif</strong>, <strong>Data Scientist & AI Engineer</strong>
+          basé à Rabat. Je termine mon diplôme d'ingénieur en Intelligence Artificielle
+          & Big Data à l'<strong>ISGA</strong>.
+        </p>
+        <p>
+          J'aime construire de bout en bout : collecter et nettoyer la donnée,
+          entraîner et déployer des modèles (ML classique, NLP, LLMs), puis livrer
+          une interface web soignée par-dessus. J'ai travaillé sur des projets
+          réellement déployés — de la salle des marchés d'<strong>Attijariwafa Bank</strong>
+          à des outils IA pour le design et l'emploi.
+        </p>
+      </div>
+      <div class="about__facts">
+        <div class="about__card">
+          <div class="about__avatar"><span>YE</span><i class="about__avatar-pulse"></i></div>
+          <div class="about__id">
+            <strong>Yahya Elmoussaif</strong>
+            <span class="about__status"><i></i> Data Scientist @ Attijariwafa Bank</span>
+          </div>
+        </div>
+        <ul class="facts">
+          <li><span>📍 Localisation</span><strong>Rabat, Maroc</strong></li>
+          <li><span>💼 Actuellement</span><strong>Data Scientist @ Attijariwafa Bank</strong></li>
+          <li><span>🎓 Formation</span><strong>Ing. IA & Big Data — ISGA</strong></li>
+          <li><span>🌐 Langues</span><strong>FR (C2) · EN (B2) · AR (natif)</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= EXPÉRIENCE ======================= -->
+  <section class="experience" id="experience">
+    <div class="section__head">
+      <span class="section__no">02</span>
+      <h2 class="section__title">Expérience</h2>
+    </div>
+    <div class="timeline">
+      <article class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Fév. – Août 2026</span>
+          <h3 class="tl-role">Stagiaire Data Scientist / AI Engineer</h3>
+          <span class="tl-org">Attijariwafa Bank · Casablanca</span>
+          <div class="tl-logos"><img src="assets/attijariwafa.svg" alt="Attijariwafa Bank" onerror="this.style.display='none'" /></div>
+          <ul class="tl-points">
+            <li>Plateforme IA d'aide à la décision pour les traders Forex : pipeline NLP (FinBERT), modèles LightGBM (UP/DOWN/FLAT), scraping de 30+ sources RSS, indicateurs techniques (Fibonacci, EMA, Bollinger, Ichimoku), réentraînement automatique toutes les 12h.</li>
+            <li>Architecture trois-tiers : React + TypeScript (dashboard), Spring Boot (proxy API REST), Flask/Python (inférence ML) — déployée en salle des marchés internationale.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Sept. 2025 – Jan. 2026</span>
+          <h3 class="tl-role">AI Engineer Intern</h3>
+          <span class="tl-org">McLeuker · Paris, France</span>
+          <div class="tl-logos"><img src="assets/mcleuker.svg" alt="McLeuker" onerror="this.style.display='none'" /></div>
+          <ul class="tl-points">
+            <li>Développement de modèles ML et de LLMs pour la recommandation, le scoring et l'analyse prédictive sur des datasets complexes.</li>
+            <li>EDA, visualisation de données et feature engineering pour soutenir la prise de décision.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Juin – Août 2025</span>
+          <h3 class="tl-role">Stagiaire Développeur IA</h3>
+          <span class="tl-org">Works Platforme / Caciopee · Rabat</span>
+          <div class="tl-logos">
+            <img src="assets/works-platform.svg" alt="Works Platform" onerror="this.style.display='none'" />
+            <img src="assets/caciopee.svg" alt="Caciopee" onerror="this.style.display='none'" />
+          </div>
+          <ul class="tl-points">
+            <li>Création d'<strong>AUTOM</strong> : outil IA générant des maquettes UI interactives à partir de données XML métier via des LLMs.</li>
+            <li>Extraction, structuration JSON/XML et intégration de modèles de langage pour des recommandations de design.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Sept. – Oct. 2024</span>
+          <h3 class="tl-role">Stagiaire Web</h3>
+          <span class="tl-org">POL IT · Casablanca</span>
+          <div class="tl-logos"><img src="assets/pol-it.svg" alt="POL IT" onerror="this.style.display='none'" /></div>
+          <ul class="tl-points">
+            <li>Développement d'applications web (Laravel/Symfony), traitement de données utilisateurs et automatisation JavaScript.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Août – Sept. 2023</span>
+          <h3 class="tl-role">Stagiaire Observateur</h3>
+          <span class="tl-org">POL IT · Casablanca</span>
+          <div class="tl-logos"><img src="assets/pol-it.svg" alt="POL IT" onerror="this.style.display='none'" /></div>
+          <ul class="tl-points">
+            <li>Contribution à <strong>Jortal</strong> — plateforme d'emploi avec matching intelligent CV/offres via analyse sémantique.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ======================= PROJECTS ======================= -->
+  <section class="projects" id="projects">
+    <div class="section__head">
+      <span class="section__no">03</span>
+      <h2 class="section__title">Projets</h2>
+      <p class="section__hint">Clique sur une carte pour ouvrir le projet ⚡</p>
+    </div>
+    <!-- Les cartes sont générées par JS depuis js/projects.js -->
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- ======================= COMPÉTENCES ======================= -->
+  <section class="skills" id="skills">
+    <div class="section__head">
+      <span class="section__no">04</span>
+      <h2 class="section__title">Compétences techniques</h2>
+      <p class="section__hint">Le cœur de mon stack, du modèle à la mise en prod.</p>
+    </div>
+
+    <div class="corebars" id="coreBars">
+      <div class="corebar"><div class="corebar__head"><span>Machine Learning &amp; Deep Learning</span><b data-to="92">0%</b></div><div class="corebar__track"><i data-v="92"></i></div></div>
+      <div class="corebar"><div class="corebar__head"><span>LLMs &amp; Generative AI</span><b data-to="88">0%</b></div><div class="corebar__track"><i data-v="88"></i></div></div>
+      <div class="corebar"><div class="corebar__head"><span>Python &amp; Data Engineering</span><b data-to="94">0%</b></div><div class="corebar__track"><i data-v="94"></i></div></div>
+      <div class="corebar"><div class="corebar__head"><span>Développement Web &amp; API</span><b data-to="85">0%</b></div><div class="corebar__track"><i data-v="85"></i></div></div>
+      <div class="corebar"><div class="corebar__head"><span>Cloud, Docker &amp; MLOps</span><b data-to="78">0%</b></div><div class="corebar__track"><i data-v="78"></i></div></div>
+      <div class="corebar"><div class="corebar__head"><span>NLP &amp; Transformers</span><b data-to="90">0%</b></div><div class="corebar__track"><i data-v="90"></i></div></div>
+    </div>
+
+    <div class="skillset">
+      <div class="skillrow">
+        <h3>Langages</h3>
+        <ul class="chips">
+          <li>Python</li><li>Java</li><li>TypeScript</li><li>JavaScript</li><li>PHP</li>
+          <li>SQL</li><li>C/C++</li><li>Bash</li><li>Kotlin</li><li>HTML/CSS</li><li>LaTeX</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>IA / ML</h3>
+        <ul class="chips">
+          <li>LightGBM</li><li>XGBoost</li><li>FinBERT</li><li>Transformers</li><li>NLP</li>
+          <li>LLMs (Mistral, DeepSeek, CodeLlama, GPT-4)</li><li>scikit-learn</li>
+          <li>TensorFlow</li><li>Keras</li><li>PyTorch</li><li>Pandas</li><li>NumPy</li>
+          <li>FAISS</li><li>RAG</li><li>LangChain</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>Gen AI</h3>
+        <ul class="chips">
+          <li>Prompt Engineering</li><li>Fine-tuning (LoRA/QLoRA)</li><li>Embeddings</li>
+          <li>Vector DBs (Pinecone, ChromaDB)</li><li>OpenAI API</li><li>Anthropic API</li><li>Hugging Face</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>Web & API</h3>
+        <ul class="chips">
+          <li>Spring Boot</li><li>React.js</li><li>Flask</li><li>FastAPI</li><li>Laravel</li>
+          <li>Symfony</li><li>REST API</li><li>GraphQL</li><li>WebRTC</li><li>WebSockets</li>
+          <li>Docker</li><li>Kubernetes</li><li>Git/GitLab</li><li>CI/CD (GitHub Actions)</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>Données</h3>
+        <ul class="chips">
+          <li>PostgreSQL</li><li>MongoDB</li><li>Redis</li><li>SQL</li><li>NoSQL</li>
+          <li>Power BI</li><li>Tableau</li><li>Grafana</li><li>Jupyter</li><li>EDA</li>
+          <li>Data Cleaning</li><li>ETL</li><li>Apache Kafka</li><li>Spark (notions)</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>Cloud & DevOps</h3>
+        <ul class="chips">
+          <li>Oracle Cloud (OCI)</li><li>AWS (EC2, S3)</li><li>Linux</li><li>Nginx</li>
+          <li>Terraform (notions)</li><li>MLflow</li><li>Weights & Biases</li>
+        </ul>
+      </div>
+      <div class="skillrow">
+        <h3>Méthodes</h3>
+        <ul class="chips">
+          <li>ML supervisé/non supervisé</li><li>Deep Learning</li><li>Feature Engineering</li>
+          <li>Agile/Scrum</li><li>Design Patterns</li><li>TDD</li><li>SOLID</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FORMATION ======================= -->
+  <section class="education" id="education">
+    <div class="section__head">
+      <span class="section__no">05</span>
+      <h2 class="section__title">Formation</h2>
+    </div>
+    <div class="edu">
+      <article class="edu__item">
+        <a class="edu__photo" href="https://isga.ma/" target="_blank" rel="noopener" data-label="ISGA" title="Visiter isga.ma">
+          <img src="assets/isga.svg" alt="ISGA Rabat" onerror="this.parentElement.classList.add('no-img')" />
+        </a>
+        <div class="edu__body">
+          <span class="edu__date">2021 – 2026</span>
+          <h3 class="edu__deg">Diplôme d'Ingénieur en Intelligence Artificielle & Big Data</h3>
+          <span class="edu__org">ISGA · Rabat</span>
+          <a class="edu__link" href="https://isga.ma/" target="_blank" rel="noopener">isga.ma ↗</a>
+        </div>
+      </article>
+
+      <article class="edu__item">
+        <div class="edu__photo" data-label="Lycée Moulay Youssef">
+          <img src="assets/moulay-youssef.svg" alt="Lycée Moulay Youssef" onerror="this.parentElement.classList.add('no-img')" />
+        </div>
+        <div class="edu__body">
+          <span class="edu__date">2020 – 2021</span>
+          <h3 class="edu__deg">Baccalauréat Sciences Physiques</h3>
+          <span class="edu__org">Lycée Moulay Youssef · Rabat</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ======================= CERTIFICATIONS ======================= -->
+  <section class="certifications" id="certifications">
+    <div class="section__head">
+      <span class="section__no">06</span>
+      <h2 class="section__title">Certifications</h2>
+    </div>
+    <div class="certs">
+      <a class="cert" href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=1A46498CA8F40DE4063FC24EA1F23C369F93D2C2E2E21D0A244A8CAD5DFB439E" target="_blank" rel="noopener">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/oracle.svg" alt="Oracle" /></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">OCI 2025 Data Science Professional</h3>
+        <p class="cert__meta">Identifiant : OC7653617</p>
+        <span class="cert__link">Voir le badge ↗</span>
+      </a>
+
+      <div class="cert">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/laravel.svg" alt="Laravel" /></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">Certified Laravel Developer</h3>
+        <p class="cert__meta">Certification officielle Laravel</p>
+      </div>
+
+      <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/PGSA59IUE5VS" target="_blank" rel="noopener">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">Data Visualization and Dashboards with Excel and Cognos</h3>
+        <p class="cert__meta">Power BI · Excel · Cognos · Data Viz</p>
+        <span class="cert__link">Voir le diplôme ↗</span>
+      </a>
+
+      <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/214HOEVB41K5" target="_blank" rel="noopener">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">Introduction to Data Analytics</h3>
+        <p class="cert__meta">Identifiant : 214HOEVB41K5</p>
+        <span class="cert__link">Voir le diplôme ↗</span>
+      </a>
+
+      <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/8ITD29ZMKWCW" target="_blank" rel="noopener">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">Excel Basics for Data Analysis</h3>
+        <p class="cert__meta">Pivot Tables · Data Manipulation · Cleaning</p>
+        <span class="cert__link">Voir le diplôme ↗</span>
+      </a>
+
+      <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/TOAKPB3RHIU9" target="_blank" rel="noopener">
+        <div class="cert__top"><span class="cert__logo"><img src="assets/google.svg" alt="Google" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <h3 class="cert__title">Foundations: Data, Data, Everywhere</h3>
+        <p class="cert__meta">Identifiant : TOAKPB3RHIU9</p>
+        <span class="cert__link">Voir le diplôme ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ======================= LANGUES ======================= -->
+  <section class="languages" id="languages">
+    <div class="section__head">
+      <span class="section__no">07</span>
+      <h2 class="section__title">Langues</h2>
+    </div>
+    <div class="langs">
+      <div class="lang"><span class="lang__flag">🇫🇷</span><div><strong>Français</strong><span>Courant — TCF C2</span></div></div>
+      <div class="lang"><span class="lang__flag">🇬🇧</span><div><strong>Anglais</strong><span>Courant — TOEFL B2</span></div></div>
+      <div class="lang"><span class="lang__flag">🇲🇦</span><div><strong>Arabe</strong><span>Langue maternelle</span></div></div>
+    </div>
+  </section>
+
+  <!-- ======================= CONNECT / CONTACT ======================= -->
+  <section class="connect" id="connect">
+    <canvas class="connect__canvas" id="connectCanvas"></canvas>
+    <div class="connect__inner">
+      <span class="section__no">08</span>
+      <h2 class="connect__title">On se <span class="grad">connecte</span> ?</h2>
+      <p class="connect__sub">
+        Un projet, une opportunité, ou juste envie d'échanger sur l'IA — ma boîte mail est ouverte.
+      </p>
+      <a href="mailto:elmoussaifmail@gmail.com" class="btn btn--primary btn--lg">
+        elmoussaifmail@gmail.com
+      </a>
+      <div class="connect__details">
+        <span>📞 +212 6 21 15 56 27</span>
+        <span>📍 Rabat, Maroc</span>
+      </div>
+      <div class="connect__socials">
+        <a href="https://github.com/ELD1AVOLO" target="_blank" rel="noopener">GitHub</a>
+        <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Yahya Elmoussaif — Conçu avec ⚡ et beaucoup de café.</p>
+  </footer>
+
+  <!-- ======================= MODAL (grande fenêtre projet) ======================= -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__window" role="dialog" aria-modal="true">
+      <canvas class="modal__canvas" id="modalCanvas"></canvas>
+      <button class="modal__close" data-close aria-label="Fermer">✕</button>
+
+      <div class="modal__content">
+        <!-- Colonne gauche : la "simulation" du projet -->
+        <div class="modal__stage">
+          <div class="modal__preview" id="modalPreview"></div>
+        </div>
+        <!-- Colonne droite : infos -->
+        <div class="modal__info">
+          <span class="modal__tag" id="modalTag">PROJET</span>
+          <h3 class="modal__title" id="modalTitle">Titre</h3>
+          <p class="modal__desc" id="modalDesc">Description</p>
+          <ul class="modal__features" id="modalFeatures"></ul>
+          <div class="modal__orgs" id="modalOrgs"></div>
+          <ul class="chips chips--sm" id="modalTech"></ul>
+          <div class="modal__links" id="modalLinks"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton retour en haut -->
+  <button class="to-top" id="toTop" aria-label="Remonter en haut" title="Remonter">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="js/lightning.js?v=3"></script>
+  <script src="js/projects.js?v=11"></script>
+  <script src="js/main.js?v=12"></script>
+</body>
+</html>

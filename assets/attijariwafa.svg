@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 100" font-family="Arial, Helvetica, sans-serif">
+  <rect width="330" height="100" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="aw" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7B500"/>
+      <stop offset="1" stop-color="#E8500E"/>
+    </linearGradient>
+  </defs>
+  <!-- marque (carré orange + signe angulaire noir) -->
+  <rect x="16" y="26" width="48" height="48" rx="5" fill="url(#aw)"/>
+  <path d="M24 66 L34 38 L40 54 L46 38 L56 66 L48 66 L43 52 L37 66 Z" fill="#141414"/>
+  <!-- nom -->
+  <text x="78" y="50" font-size="25" font-weight="700" fill="#B11116" letter-spacing="0.3">Attijariwafa</text>
+  <text x="78" y="76" font-size="21" font-weight="400" fill="#6B6B6B">bank</text>
+</svg>

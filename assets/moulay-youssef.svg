@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="200" height="180" fill="#ffffff"/>
+  <!-- arche mauresque (pointillés = clin d'œil au zellige) -->
+  <path d="M38 168 L38 92 Q38 34 100 34 Q162 34 162 92 L162 168" fill="none" stroke="#2E7D5B" stroke-width="6" stroke-linecap="round" stroke-dasharray="2.5 6"/>
+  <path d="M50 168 L50 95 Q50 48 100 48 Q150 48 150 95 L150 168" fill="none" stroke="#2E7D5B" stroke-width="2"/>
+  <text x="100" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#2E7D5B" letter-spacing="1">LYCÉE</text>
+  <text x="100" y="110" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2E7D5B" letter-spacing="0.5">MOULAY YOUSSEF</text>
+  <text x="100" y="131" text-anchor="middle" font-size="8.5" fill="#3AA17E" letter-spacing="2">· SINCE 1916 ·</text>
+</svg>

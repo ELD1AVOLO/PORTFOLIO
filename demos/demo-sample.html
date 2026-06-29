@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaTask — Démo</title>
+
+  <!-- ===== Tout est auto-suffisant : 3 scripts CDN, aucun build, aucun backend ===== -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    html, body, #root { height: 100%; margin: 0; }
+    body { background: #0b0d16; color: #e9edf5; font-family: ui-sans-serif, system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #2a3350; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Code JSX stocké comme texte (type non reconnu => pas d'auto-exécution Babel) -->
+  <script type="text/jsx-source" id="appSrc">
+    const { useState } = React;
+
+    /* =========================================================
+       DONNÉES FACTICES (mock) — petit jeu de données, sans API
+       ========================================================= */
+    const STATS = [
+      { label: "Tâches actives", value: 24, delta: "+12%", color: "#4cc9f0" },
+      { label: "Terminées",      value: 87, delta: "+5%",  color: "#00f5a0" },
+      { label: "En retard",      value: 3,  delta: "-2",   color: "#ff5c7c" },
+    ];
+    const TASKS = [
+      { id: 1, title: "Refonte page d'accueil", owner: "Sara",    status: "En cours", prio: "Haute",   due: "2j", desc: "Mettre à jour le hero et la grille de projets." },
+      { id: 2, title: "API authentification",   owner: "Youssef", status: "À faire",  prio: "Moyenne", due: "5j", desc: "Implémenter JWT + refresh tokens." },
+      { id: 3, title: "Tests E2E checkout",      owner: "Imane",   status: "En cours", prio: "Haute",   due: "1j", desc: "Couvrir le tunnel d'achat avec Playwright." },
+      { id: 4, title: "Optimiser les images",    owner: "Mehdi",   status: "Terminé",  prio: "Basse",   due: "—",  desc: "Conversion en WebP + lazy loading." },
+      { id: 5, title: "Page tarifs",             owner: "Sara",    status: "À faire",  prio: "Moyenne", due: "8j", desc: "3 offres + bascule mensuel/annuel." },
+    ];
+    const TEAM = [
+      { n: "Sara",    r: "Design",   c: "#4cc9f0" },
+      { n: "Youssef", r: "Backend",  c: "#b14cff" },
+      { n: "Imane",   r: "QA",       c: "#00f5a0" },
+      { n: "Mehdi",   r: "Frontend", c: "#ff5c7c" },
+    ];
+
+    const initials = (name) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+    const statusColor = (s) => s === "Terminé" ? "#00f5a0" : s === "En cours" ? "#4cc9f0" : "#8b93a7";
+    const prioColor   = (p) => p === "Haute" ? "#ff5c7c" : p === "Moyenne" ? "#f5b14c" : "#8b93a7";
+
+    /* ===== Petits composants ===== */
+    const Avatar = ({ name, c, size = 36 }) => (
+      <div style={{ width: size, height: size, background: c }}
+           className="rounded-full grid place-items-center font-semibold text-[#06121e] shrink-0">
+        {initials(name)}
+      </div>
+    );
+    const Pill = ({ children, color }) => (
+      <span className="text-xs px-2 py-0.5 rounded-full border"
+            style={{ color, borderColor: color + "55", background: color + "18" }}>{children}</span>
+    );
+
+    /* ===== Écrans ===== */
+    function Dashboard() {
+      return (
+        <div className="space-y-6">
+          <div className="grid grid-cols-3 gap-4">
+            {STATS.map((s) => (
+              <div key={s.label} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="text-sm text-slate-400">{s.label}</div>
+                <div className="mt-2 flex items-end gap-2">
+                  <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
+                  <div className="text-xs text-slate-400 pb-1">{s.delta}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <div className="text-sm font-semibold mb-4">Activité de la semaine</div>
+            <div className="flex items-end gap-3 h-32">
+              {[40, 65, 30, 80, 55, 95, 70].map((h, i) => (
+                <div key={i} className="flex-1 rounded-t-lg"
+                     style={{ height: h + "%", background: "linear-gradient(180deg,#4cc9f0,#b14cff)" }} />
+              ))}
+            </div>
+            <div className="flex justify-between text-xs text-slate-500 mt-2">
+              {["L","M","M","J","V","S","D"].map((d,i) => <span key={i}>{d}</span>)}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Tasks({ onOpen }) {
+      return (
+        <div className="rounded-2xl border border-white/10 overflow-hidden">
+          {TASKS.map((t, i) => (
+            <button key={t.id} onClick={() => onOpen(t)}
+              className={"w-full text-left p-4 flex items-center gap-4 hover:bg-white/[0.04] transition " +
+                         (i ? "border-t border-white/10" : "")}>
+              <Avatar name={t.owner} c={TEAM.find(m => m.n === t.owner)?.c || "#4cc9f0"} />
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{t.title}</div>
+                <div className="text-xs text-slate-400">{t.owner} · échéance {t.due}</div>
+              </div>
+              <Pill color={prioColor(t.prio)}>{t.prio}</Pill>
+              <Pill color={statusColor(t.status)}>{t.status}</Pill>
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    function TaskDetail({ task, onBack }) {
+      return (
+        <div className="space-y-4">
+          <button onClick={onBack} className="text-sm text-cyan-300 hover:underline">← Retour</button>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 space-y-4">
+            <h2 className="text-2xl font-bold">{task.title}</h2>
+            <div className="flex gap-2">
+              <Pill color={prioColor(task.prio)}>{task.prio}</Pill>
+              <Pill color={statusColor(task.status)}>{task.status}</Pill>
+            </div>
+            <p className="text-slate-300">{task.desc}</p>
+            <div className="grid grid-cols-2 gap-4 pt-2 text-sm">
+              <div><div className="text-slate-500">Responsable</div><div className="mt-1 flex items-center gap-2">
+                <Avatar name={task.owner} c={TEAM.find(m => m.n === task.owner)?.c || "#4cc9f0"} size={28} />{task.owner}</div></div>
+              <div><div className="text-slate-500">Échéance</div><div className="mt-1">{task.due}</div></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Team() {
+      return (
+        <div className="grid grid-cols-2 gap-4">
+          {TEAM.map((m) => (
+            <div key={m.n} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center gap-3">
+              <Avatar name={m.n} c={m.c} size={44} />
+              <div><div className="font-medium">{m.n}</div><div className="text-xs text-slate-400">{m.r}</div></div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* ===== App : navigation par état (stateless, pas de backend) ===== */
+    function App() {
+      const [page, setPage] = useState("dash");
+      const [task, setTask] = useState(null);
+
+      const nav = [
+        { id: "dash",  label: "Tableau de bord", icon: "▦" },
+        { id: "tasks", label: "Tâches",          icon: "☰" },
+        { id: "team",  label: "Équipe",          icon: "♟" },
+      ];
+      const go = (id) => { setTask(null); setPage(id); };
+
+      return (
+        <div className="h-full flex text-[15px]">
+          {/* Sidebar */}
+          <aside className="w-52 shrink-0 border-r border-white/10 p-4 flex flex-col gap-1 bg-white/[0.02]">
+            <div className="flex items-center gap-2 px-2 pb-4 font-bold text-lg">
+              <span style={{ filter: "drop-shadow(0 0 6px #4cc9f0)" }}>⚡</span> NovaTask
+            </div>
+            {nav.map((n) => (
+              <button key={n.id} onClick={() => go(n.id)}
+                className={"flex items-center gap-3 px-3 py-2 rounded-lg text-left transition " +
+                  (page === n.id ? "bg-cyan-400/15 text-cyan-200" : "text-slate-400 hover:bg-white/5")}>
+                <span className="w-4 text-center">{n.icon}</span>{n.label}
+              </button>
+            ))}
+            <div className="mt-auto flex items-center gap-2 px-2 pt-4 border-t border-white/10">
+              <Avatar name="Mehdi El" c="#b14cff" size={30} />
+              <div className="text-xs"><div className="text-slate-200">Mehdi</div><div className="text-slate-500">Admin</div></div>
+            </div>
+          </aside>
+
+          {/* Contenu */}
+          <main className="flex-1 overflow-y-auto">
+            <header className="flex items-center justify-between px-6 py-4 border-b border-white/10 sticky top-0 bg-[#0b0d16]/80 backdrop-blur">
+              <h1 className="text-lg font-semibold">
+                {task ? "Détail de la tâche" : nav.find(n => n.id === page).label}
+              </h1>
+              <div className="text-sm text-slate-500 border border-white/10 rounded-lg px-3 py-1.5">🔍 Rechercher…</div>
+            </header>
+            <div className="p-6">
+              {task ? <TaskDetail task={task} onBack={() => setTask(null)} />
+                : page === "dash" ? <Dashboard />
+                : page === "tasks" ? <Tasks onOpen={setTask} />
+                : <Team />}
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+
+  <!-- Compilation manuelle en runtime CLASSIQUE (React.createElement, sans import) -->
+  <script>
+    (function () {
+      var run = function () {
+        var src = document.getElementById("appSrc").textContent;
+        var out = Babel.transform(src, { presets: [["react", { runtime: "classic" }]] }).code;
+        (0, eval)(out);
+      };
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+      else run();
+    })();
+  </script>
+</body>
+</html>
