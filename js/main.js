@@ -6,6 +6,10 @@
    - nav mobile, année du footer, apparition au scroll
    ===================================================================== */
 
+// Marque le JS comme prêt dès le chargement de ce script.
+// Si le JS ne se charge pas / plante, le contenu reste visible (pas de page blanche).
+document.documentElement.classList.add("js-ready");
+
 document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Année footer ---------- */
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -59,6 +63,57 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("themeToggle").addEventListener("click", () => {
     applyTheme(currentTheme === "dark" ? "light" : "dark");
   });
+
+  /* ---------- Compteurs animés (stats du hero) ---------- */
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count) || 0;
+    const suffix = el.dataset.suffix || "";
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = target + suffix; return;
+    }
+    const dur = 1400, start = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+  // les stats sont visibles d'emblée (dans le hero) -> on lance après l'entrée du hero
+  setTimeout(() => document.querySelectorAll("[data-count]").forEach(animateCount), 500);
+
+  /* ---------- Boutons magnétiques (façon agence) ---------- */
+  function attachMagnetic(el) {
+    if (matchMedia("(hover: none)").matches) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const S = 0.3;
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) * S;
+      const y = (e.clientY - r.top - r.height / 2) * S;
+      el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+    });
+    el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+  }
+  document.querySelectorAll(".magnetic").forEach(attachMagnetic);
+
+  /* ---------- Effet d'inclinaison 3D au survol (façon agence) ---------- */
+  function attachTilt(el) {
+    // pas d'effet sur écran tactile ni en mouvement réduit
+    if (matchMedia("(hover: none)").matches) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const MAX = 6;
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform =
+        `perspective(800px) rotateX(${(-py * MAX).toFixed(2)}deg) rotateY(${(px * MAX).toFixed(2)}deg) translateY(-8px)`;
+    });
+    el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+  }
 
   /* ---------- Génération des cartes ---------- */
   const cardsEl = document.getElementById("cards");
