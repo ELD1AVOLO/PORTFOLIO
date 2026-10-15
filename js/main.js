@@ -48,14 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- Éclairs ---------- */
   // Overlay global : suit la souris sur toute la page
+  // (toujours actifs, même si Windows a les animations réduites : c'est l'identité du site)
   let fx = null, hero = null, connect = null;
-  if (!reducedMotion && window.LightningCanvas) {
+  if (window.LightningCanvas) {
     fx = new LightningCanvas(document.getElementById("fxCanvas"), {
-      pointer: true, transparent: true, maxBolts: 3,
+      pointer: true, transparent: true, maxBolts: 4,
     });
-    // Ambiance : éclairs discrets dans le hero et le contact
-    hero = new LightningCanvas(document.getElementById("heroCanvas"), { intensity: 0.38, maxBolts: 2 });
-    connect = new LightningCanvas(document.getElementById("connectCanvas"), { intensity: 0.3, maxBolts: 2 });
+    // Ambiance : éclairs qui tombent dans le hero et le contact
+    hero = new LightningCanvas(document.getElementById("heroCanvas"), { intensity: 0.55, maxBolts: 2 });
+    connect = new LightningCanvas(document.getElementById("connectCanvas"), { intensity: 0.4, maxBolts: 2 });
     fx.start(); hero.start(); connect.start();
   } else {
     document.querySelectorAll(".fx-canvas, .hero__canvas, .connect__canvas").forEach((canvas) => {
@@ -290,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(() => modalWindow.focus({ preventScroll: true }));
 
     // éclairs dans la fenêtre (couleur = accent du projet, cœur selon le thème)
-    if (!reducedMotion && window.LightningCanvas) {
+    if (window.LightningCanvas) {
       const t = THEMES[currentTheme];
       modalLightning = new LightningCanvas(modalCanvasEl, {
         intensity: 0.65, glow: p.accent || "#4cc9f0", color: p.accent || "#9fd8ff",

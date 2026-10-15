@@ -60,7 +60,7 @@
         enter: "Découvrir le portfolio",
         skip: "Explorer sans personnaliser",
         close: "Fermer l’accueil",
-        localeLabel: "Changer la langue et le profil",
+        localeLabel: "Changer la langue",
         visitorGreeting: (name) => `Bonjour ${name}, bienvenue dans mon univers.`,
         roles: {
           recruiter: "Recrutement",
@@ -121,7 +121,7 @@
         enter: "Explore the portfolio",
         skip: "Explore without personalising",
         close: "Close welcome",
-        localeLabel: "Change language and profile",
+        localeLabel: "Change language",
         visitorGreeting: (name) => `Hello ${name}, welcome to my world.`,
         roles: {
           recruiter: "Recruiting",
@@ -182,7 +182,7 @@
         enter: "اكتشف ملف الأعمال",
         skip: "التصفح دون تخصيص",
         close: "إغلاق الترحيب",
-        localeLabel: "تغيير اللغة والملف الشخصي",
+        localeLabel: "تغيير اللغة",
         visitorGreeting: (name) => `مرحباً ${name}، أهلاً بك في عالمي.`,
         roles: {
           recruiter: "التوظيف",
@@ -202,6 +202,7 @@
     skip: document.getElementById("onboardingSkip"),
     localeToggle: document.getElementById("localeToggle"),
     localeCode: document.getElementById("localeCode"),
+    localeMenu: document.getElementById("localeMenu"),
     languageContinue: document.getElementById("languageContinue"),
     profileBack: document.getElementById("profileBack"),
     form: document.getElementById("visitorForm"),
@@ -303,6 +304,26 @@
       button.classList.toggle("is-selected", selected);
       button.setAttribute("aria-pressed", String(selected));
     });
+    document.querySelectorAll("[data-locale-option]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.localeOption === selectedLanguage));
+    });
+  }
+
+  function toggleLocaleMenu(open) {
+    if (!elements.localeMenu) return;
+    const isOpen = open ?? elements.localeMenu.hidden;
+    elements.localeMenu.hidden = !isOpen;
+    elements.localeToggle.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) elements.localeMenu.querySelector('[aria-pressed="true"]')?.focus({ preventScroll: true });
+  }
+
+  // Change la langue depuis la barre de navigation, sans rouvrir l'accueil
+  function switchLanguage(language) {
+    applyLocale(language);
+    updateLanguageSelection();
+    saveProfile(profile
+      ? { ...profile, language: selectedLanguage }
+      : { language: selectedLanguage, dismissed: true, name: "", role: "", profession: "" });
   }
 
   function selectRole(role) {
@@ -441,9 +462,27 @@
   elements.enter.addEventListener("click", () => closeOnboarding());
   elements.skip.addEventListener("click", () => closeOnboarding());
   elements.close.addEventListener("click", () => closeOnboarding());
-  elements.localeToggle.addEventListener("click", () => openOnboarding({ step: 1, firstRun: false }));
+  elements.localeToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleLocaleMenu();
+  });
+  document.querySelectorAll("[data-locale-option]").forEach((button) => {
+    button.addEventListener("click", () => {
+      switchLanguage(button.dataset.localeOption);
+      toggleLocaleMenu(false);
+      elements.localeToggle.focus({ preventScroll: true });
+    });
+  });
+  document.addEventListener("click", (event) => {
+    if (elements.localeMenu && !elements.localeMenu.hidden && !event.target.closest(".locale")) toggleLocaleMenu(false);
+  });
 
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && elements.localeMenu && !elements.localeMenu.hidden) {
+      toggleLocaleMenu(false);
+      elements.localeToggle.focus({ preventScroll: true });
+      return;
+    }
     if (!elements.root.classList.contains("is-open")) return;
     if (event.key === "Escape") {
       event.preventDefault();

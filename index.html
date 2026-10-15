@@ -23,7 +23,7 @@
       } catch (_) {}
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=23" />
+  <link rel="stylesheet" href="css/style.css?v=24" />
 </head>
 <body>
   <a class="skip-link" href="#mainContent">Aller au contenu</a>
@@ -152,9 +152,16 @@
       <a href="#connect" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav__right">
-      <button class="locale-toggle" id="localeToggle" type="button" aria-label="Changer la langue et le profil" title="Langue et profil">
-        <span id="localeCode">FR</span>
-      </button>
+      <div class="locale">
+        <button class="locale-toggle" id="localeToggle" type="button" aria-label="Changer la langue" title="Langue" aria-haspopup="true" aria-expanded="false" aria-controls="localeMenu">
+          <span id="localeCode">FR</span>
+        </button>
+        <div class="locale-menu" id="localeMenu" hidden>
+          <button type="button" data-locale-option="fr" aria-pressed="false"><span>FR</span>Français</button>
+          <button type="button" data-locale-option="en" aria-pressed="false"><span>EN</span>English</button>
+          <button type="button" data-locale-option="ar" aria-pressed="false"><span>AR</span>العربية</button>
+        </div>
+      </div>
       <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème" title="Thème clair / sombre">
         <span class="theme-toggle__icon" aria-hidden="true">◐</span>
       </button>
@@ -568,7 +575,7 @@
   <!-- Scripts -->
   <script src="js/lightning.js?v=3"></script>
   <script src="js/projects.js?v=11"></script>
-  <script src="js/onboarding.js?v=2"></script>
-  <script src="js/main.js?v=23"></script>
+  <script src="js/onboarding.js?v=3"></script>
+  <script src="js/main.js?v=24"></script>
 </body>
 </html>
