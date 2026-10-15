@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Année footer ---------- */
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const safeStorage = {
+    get(key) { try { return localStorage.getItem(key); } catch (_) { return null; } },
+    set(key, value) { try { localStorage.setItem(key, value); } catch (_) {} },
+  };
+
   // Anti-cache pour les démos : valeur fixée au chargement de la page.
   // => la démo est rechargée si tu rafraîchis la page (tu vois tes maj),
   //    mais reste en cache si tu rouvres la fenêtre dans la même session.
@@ -26,42 +32,77 @@ document.addEventListener("DOMContentLoaded", () => {
       fx:      { glow: "#4cc9f0", color: "#9fd8ff", core: "#ffffff", blend: "screen" },
       hero:    { glow: "#4cc9f0", color: "#9fd8ff", core: "#ffffff", bg: "rgba(5,6,12,0.32)" },
       connect: { glow: "#b14cff", color: "#e6c6ff", core: "#ffffff", bg: "rgba(5,6,12,0.32)" },
-      modalCore: "#ffffff", modalBg: "rgba(8,10,18,0.40)", icon: "🌙",
+      modalCore: "#ffffff", modalBg: "rgba(8,10,18,0.40)", icon: "◐",
     },
     light: {
       fx:      { glow: "#7c3aed", color: "#4c1d95", core: "#160a36", blend: "multiply" },
       hero:    { glow: "#7c3aed", color: "#5b21b6", core: "#160a36", bg: "rgba(245,246,251,0.34)" },
       connect: { glow: "#2563eb", color: "#1e3a8a", core: "#0b1030", bg: "rgba(245,246,251,0.34)" },
-      modalCore: "#160a36", modalBg: "rgba(245,246,251,0.42)", icon: "☀️",
+      modalCore: "#160a36", modalBg: "rgba(245,246,251,0.42)", icon: "☼",
     },
   };
-  let currentTheme = localStorage.getItem("theme") || "dark";
+  const savedTheme = safeStorage.get("theme");
+  let currentTheme = savedTheme === "light" || savedTheme === "dark"
+    ? savedTheme
+    : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
 
   /* ---------- Éclairs ---------- */
   // Overlay global : suit la souris sur toute la page
-  const fx = new LightningCanvas(document.getElementById("fxCanvas"), {
-    pointer: true, transparent: true, maxBolts: 4,
-  });
-  // Ambiance : éclairs qui tombent dans le hero et le contact
-  const hero = new LightningCanvas(document.getElementById("heroCanvas"), { intensity: 0.55, maxBolts: 2 });
-  const connect = new LightningCanvas(document.getElementById("connectCanvas"), { intensity: 0.4, maxBolts: 2 });
-  fx.start(); hero.start(); connect.start();
+  let fx = null, hero = null, connect = null;
+  if (!reducedMotion && window.LightningCanvas) {
+    fx = new LightningCanvas(document.getElementById("fxCanvas"), {
+      pointer: true, transparent: true, maxBolts: 3,
+    });
+    // Ambiance : éclairs discrets dans le hero et le contact
+    hero = new LightningCanvas(document.getElementById("heroCanvas"), { intensity: 0.38, maxBolts: 2 });
+    connect = new LightningCanvas(document.getElementById("connectCanvas"), { intensity: 0.3, maxBolts: 2 });
+    fx.start(); hero.start(); connect.start();
+  } else {
+    document.querySelectorAll(".fx-canvas, .hero__canvas, .connect__canvas").forEach((canvas) => {
+      canvas.hidden = true;
+    });
+  }
 
   /* ---------- Application d'un thème ---------- */
   function applyTheme(name) {
+    if (!THEMES[name]) name = "dark";
     currentTheme = name;
     const t = THEMES[name];
     document.body.classList.toggle("light", name === "light");
-    fx.configure(t.fx);
-    hero.configure(t.hero);
-    connect.configure(t.connect);
+    document.documentElement.dataset.theme = name;
+    fx?.configure(t.fx);
+    hero?.configure(t.hero);
+    connect?.configure(t.connect);
     document.querySelector("#themeToggle .theme-toggle__icon").textContent = t.icon;
-    localStorage.setItem("theme", name);
+    const themeButton = document.getElementById("themeToggle");
+    themeButton.setAttribute("aria-pressed", String(name === "light"));
+    themeButton.setAttribute("aria-label", name === "light" ? "Activer le thème sombre" : "Activer le thème clair");
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", name === "light" ? "#f7f9fc" : "#070a12");
+    safeStorage.set("theme", name);
   }
   applyTheme(currentTheme);
 
   document.getElementById("themeToggle").addEventListener("click", () => {
     applyTheme(currentTheme === "dark" ? "light" : "dark");
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    [fx, hero, connect].filter(Boolean).forEach((canvas) => {
+      if (document.hidden) canvas.stop(); else canvas.start();
+    });
+  });
+
+  /* ---------- Logos distants : second essai puis repli texte ---------- */
+  document.querySelectorAll("img[data-fallback-src], .brand-logo img, .edu__photo img").forEach((img) => {
+    img.addEventListener("error", () => {
+      if (img.dataset.fallbackSrc && img.dataset.fallbackTried !== "true") {
+        img.dataset.fallbackTried = "true";
+        img.src = img.dataset.fallbackSrc;
+        return;
+      }
+      img.closest(".brand-logo")?.classList.add("has-error");
+      img.closest(".edu__photo")?.classList.add("no-img");
+    });
   });
 
   /* ---------- Compteurs animés (stats du hero) ---------- */
@@ -115,11 +156,30 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("pointerleave", () => { el.style.transform = ""; });
   }
 
+  const INTERFACE_COPY = {
+    fr: { open: "Ouvrir le projet", close: "Fermer", madeAt: "Réalisé chez", interactive: "Démo interactive (données factices) — naviguez à l’intérieur", reload: "Relancer la démo", live: "En production", contribution: "Contribution", personal: "Projet perso" },
+    en: { open: "Open project", close: "Close", madeAt: "Built at", interactive: "Interactive demo (sample data) — explore inside", reload: "Restart demo", live: "In production", contribution: "Contribution", personal: "Personal project" },
+    ar: { open: "افتح المشروع", close: "إغلاق", madeAt: "أُنجز لدى", interactive: "تجربة تفاعلية ببيانات تجريبية", reload: "إعادة تشغيل العرض", live: "قيد الإنتاج", contribution: "مساهمة", personal: "مشروع شخصي" },
+  };
+  const interfaceLanguage = () => ["fr", "en", "ar"].includes(document.documentElement.lang) ? document.documentElement.lang : "fr";
+  const interfaceText = () => INTERFACE_COPY[interfaceLanguage()];
+
+  function translatedStatus(status) {
+    if (/prod/i.test(status || "")) return interfaceText().live;
+    if (/contribution/i.test(status || "")) return interfaceText().contribution;
+    if (/perso/i.test(status || "")) return interfaceText().personal;
+    return status || "";
+  }
+
   /* ---------- Génération des cartes ---------- */
   const cardsEl = document.getElementById("cards");
-  PROJECTS.forEach((p, i) => {
+  const projects = Array.isArray(window.PROJECTS) ? window.PROJECTS : [];
+  projects.forEach((p, i) => {
     const card = document.createElement("button");
+    card.type = "button";
     card.className = "card";
+    card.setAttribute("aria-haspopup", "dialog");
+    card.setAttribute("aria-label", `${p.title} — ouvrir le projet`);
     card.style.setProperty("--accent", p.accent || "#4cc9f0");
     card.style.animationDelay = `${i * 80}ms`;
     const isLive = /prod/i.test(p.status || "");
@@ -130,25 +190,63 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="card__sheen"></div>
       <div class="card__top">
         <span class="card__tag">${p.tag}</span>
-        ${p.status ? `<span class="card__status ${isLive ? "is-live" : ""}">${isLive ? '<i></i>' : ""}${p.status}</span>` : ""}
+        ${p.status ? `<span class="card__status ${isLive ? "is-live" : ""}">${isLive ? '<i></i>' : ""}<span>${translatedStatus(p.status)}</span></span>` : ""}
       </div>
       <h3 class="card__title">${p.title}</h3>
       <p class="card__short">${p.short}</p>
       <div class="card__stack">${techPreview}${(p.tech || []).length > 4 ? `<span class="card__more">+${p.tech.length - 4}</span>` : ""}</div>
-      <span class="card__open">Ouvrir le projet <b>⚡</b></span>
+      <span class="card__open">${interfaceText().open} <b>⚡</b></span>
     `;
-    card.addEventListener("click", () => openModal(p));
+    card.addEventListener("click", () => openModal(p, card));
     attachTilt(card);
     cardsEl.appendChild(card);
+    card._project = p;
   });
+
+  function refreshGeneratedCopy() {
+    cardsEl.querySelectorAll(".card").forEach((card) => {
+      const project = card._project;
+      if (!project) return;
+      const openLabel = card.querySelector(".card__open");
+      if (openLabel) openLabel.innerHTML = `${interfaceText().open} <b>⚡</b>`;
+      const status = card.querySelector(".card__status > span");
+      if (status) status.textContent = translatedStatus(project.status);
+      card.setAttribute("aria-label", `${project.title} — ${interfaceText().open}`);
+    });
+    document.querySelector(".modal__close")?.setAttribute("aria-label", interfaceText().close);
+  }
+  document.addEventListener("portfolio:locale-changed", refreshGeneratedCopy);
 
   /* ---------- Modal ---------- */
   const modal = document.getElementById("modal");
+  const modalWindow = modal.querySelector(".modal__window");
   const modalCanvasEl = document.getElementById("modalCanvas");
   let modalLightning = null;
   let appResize = null; // listener resize pour mettre à l'échelle la démo
+  let modalTrigger = null;
+  let previewRun = 0;
+  const previewTimers = new Set();
+  modal.setAttribute("inert", "");
 
-  function openModal(p) {
+  function schedulePreview(callback, delay, run = previewRun) {
+    const timer = window.setTimeout(() => {
+      previewTimers.delete(timer);
+      if (run === previewRun) callback();
+    }, delay);
+    previewTimers.add(timer);
+    return timer;
+  }
+
+  function cancelPreview() {
+    previewRun += 1;
+    previewTimers.forEach((timer) => window.clearTimeout(timer));
+    previewTimers.clear();
+  }
+
+  function openModal(p, trigger) {
+    cancelPreview();
+    const run = previewRun;
+    modalTrigger = trigger || document.activeElement;
     // démo d'app interactive => fenêtre large, une seule colonne
     modal.classList.toggle("modal--wide", !!(p.preview && p.preview.type === "app"));
     document.getElementById("modalTag").textContent = p.tag;
@@ -162,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // logos des entités (optionnel) — ex : "Réalisé chez ..."
     const orgsEl = document.getElementById("modalOrgs");
     orgsEl.innerHTML = (p.orgLogos && p.orgLogos.length)
-      ? `<span class="modal__orgs-label">Réalisé chez</span>` +
+      ? `<span class="modal__orgs-label">${interfaceText().madeAt}</span>` +
         p.orgLogos.map((o) => {
           const img = `<img src="${o.src}" alt="${o.alt || ""}" onerror="this.style.display='none'" />`;
           return o.url ? `<a href="${o.url}" target="_blank" rel="noopener">${img}</a>` : img;
@@ -175,45 +273,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // liens
     const linksEl = document.getElementById("modalLinks");
-    linksEl.innerHTML = (p.links || [])
+    linksEl.innerHTML = (p.links || []).filter((link) => link.url && link.url !== "#")
       .map((l) => `<a href="${l.url}" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">${l.label} ↗</a>`)
       .join("");
 
     // "simulation" du projet
-    renderPreview(p);
+    renderPreview(p, run);
 
     // ouverture
+    modal.removeAttribute("inert");
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+    document.body.classList.add("has-overlay");
+    document.getElementById("nav").setAttribute("inert", "");
+    document.getElementById("mainContent").setAttribute("inert", "");
+    requestAnimationFrame(() => modalWindow.focus({ preventScroll: true }));
 
     // éclairs dans la fenêtre (couleur = accent du projet, cœur selon le thème)
-    const t = THEMES[currentTheme];
-    modalLightning = new LightningCanvas(modalCanvasEl, {
-      intensity: 1.1, glow: p.accent || "#4cc9f0", color: p.accent || "#9fd8ff",
-      core: t.modalCore, bg: t.modalBg, maxBolts: 4,
-    });
-    modalLightning.start();
+    if (!reducedMotion && window.LightningCanvas) {
+      const t = THEMES[currentTheme];
+      modalLightning = new LightningCanvas(modalCanvasEl, {
+        intensity: 0.65, glow: p.accent || "#4cc9f0", color: p.accent || "#9fd8ff",
+        core: t.modalCore, bg: t.modalBg, maxBolts: 3,
+      });
+      modalLightning.start();
+    }
   }
 
   function closeModal() {
+    if (!modal.classList.contains("is-open")) return;
+    cancelPreview();
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+    document.body.classList.remove("has-overlay");
+    document.getElementById("nav").removeAttribute("inert");
+    document.getElementById("mainContent").removeAttribute("inert");
     if (modalLightning) { modalLightning.destroy(); modalLightning = null; }
     if (appResize) { window.removeEventListener("resize", appResize); appResize = null; }
     document.getElementById("modalPreview").innerHTML = "";
+    modal.setAttribute("inert", "");
+    if (modalTrigger && document.contains(modalTrigger)) modalTrigger.focus({ preventScroll: true });
+    modalTrigger = null;
   }
 
   modal.querySelectorAll("[data-close]").forEach((el) =>
     el.addEventListener("click", closeModal)
   );
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+    if (!modal.classList.contains("is-open")) return;
+    if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
+    if (e.key !== "Tab") return;
+    const focusable = [...modalWindow.querySelectorAll('button:not([disabled]), a[href], iframe, [tabindex]:not([tabindex="-1"])')]
+      .filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
   /* ---------- Rendu de la "simulation" (stateless) ---------- */
-  function renderPreview(p) {
+  function renderPreview(p, run) {
     const stage = document.getElementById("modalPreview");
     const pv = p.preview || { type: "lightning" };
 
@@ -229,13 +348,13 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="browser__bar">
                 <span class="browser__dots"><i></i><i></i><i></i></span>
                 <span class="browser__url">${pv.fakeUrl || "localhost:3000"}</span>
-                <button class="browser__reload" id="appReload" title="Relancer la démo">⟳</button>
+                <button class="browser__reload" id="appReload" type="button" aria-label="${interfaceText().reload}" title="${interfaceText().reload}">⟳</button>
               </div>
               <div class="browser__viewport" id="appViewport">
                 <iframe class="browser__frame" id="appFrame" title="${p.title}"></iframe>
               </div>
             </div>
-            <p class="appsim__hint">Démo interactive (données factices) — navigue à l'intérieur ⚡</p>
+            <p class="appsim__hint">${interfaceText().interactive} ⚡</p>
           </div>
         </div>`;
       const boot = pv.boot || ["$ npm run dev", "▲ démarrage du serveur…", "✓ compilé avec succès",
@@ -265,16 +384,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       typeLines(boot, document.getElementById("simPre"), () => {
-        setTimeout(() => {
-          document.getElementById("appBoot").classList.add("is-hidden");
-          document.getElementById("appScreen").classList.add("is-on");
+        schedulePreview(() => {
+          const bootElement = document.getElementById("appBoot");
+          const screenElement = document.getElementById("appScreen");
+          if (!bootElement || !screenElement || run !== previewRun) return;
+          bootElement.classList.add("is-hidden");
+          screenElement.classList.add("is-on");
           if (viewport._fit) viewport._fit();   // calcule l'échelle une fois visible
           loadDemo(); // chargement de l'iframe après le boot
-        }, 500);
-      });
+        }, 500, run);
+      }, run);
       const reloadBtn = document.getElementById("appReload");
       if (reloadBtn) reloadBtn.addEventListener("click", () => {
-        frame.src = "about:blank"; setTimeout(loadDemo, 60);
+        frame.src = "about:blank"; schedulePreview(loadDemo, 60, run);
       });
     } else if (pv.type === "iframe" && pv.url) {
       stage.innerHTML = `<iframe class="sim sim--iframe" src="${pv.url}" loading="lazy" title="${p.title}"></iframe>`;
@@ -282,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
       stage.innerHTML = `<img class="sim sim--img" src="${pv.url}" alt="${p.title}" />`;
     } else if (pv.type === "code") {
       stage.innerHTML = `<div class="sim sim--code"><div class="sim__bar"><i></i><i></i><i></i></div><pre id="simPre"></pre></div>`;
-      typeLines(pv.lines || [], document.getElementById("simPre"));
+      typeLines(pv.lines || [], document.getElementById("simPre"), null, run);
     } else {
       // ambiance pure : seulement les éclairs derrière
       stage.innerHTML = `<div class="sim sim--ambient"><span>⚡</span><p>${p.title}</p></div>`;
@@ -290,20 +412,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // effet machine à écrire ; onDone() appelé à la fin
-  function typeLines(lines, el, onDone) {
+  function typeLines(lines, el, onDone, run = previewRun) {
     let li = 0, ci = 0;
+    if (!el || run !== previewRun) return;
+    if (reducedMotion) {
+      el.textContent = lines.join("\n");
+      if (onDone) onDone();
+      return;
+    }
     el.textContent = "";
     function tick() {
+      if (run !== previewRun || !el.isConnected) return;
       if (li >= lines.length) { if (onDone) onDone(); return; }
       const line = lines[li];
       if (ci <= line.length) {
         el.textContent =
           lines.slice(0, li).join("\n") + (li > 0 ? "\n" : "") + line.slice(0, ci);
         ci++;
-        setTimeout(tick, 18 + Math.random() * 40);
+        schedulePreview(tick, 18 + Math.random() * 40, run);
       } else {
         li++; ci = 0;
-        setTimeout(tick, 280);
+        schedulePreview(tick, 280, run);
       }
     }
     tick();
@@ -312,22 +441,92 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Nav : burger mobile ---------- */
   const burger = document.getElementById("burger");
   const nav = document.getElementById("nav");
-  burger.addEventListener("click", () => nav.classList.toggle("nav--open"));
-  document.querySelectorAll(".nav__links a").forEach((a) =>
-    a.addEventListener("click", () => nav.classList.remove("nav--open"))
-  );
+  const primaryNav = document.getElementById("primaryNav");
+  const mobileNavQuery = window.matchMedia("(max-width: 1050px)");
 
-  /* ---------- Nav : fond au scroll ---------- */
-  const spyIds = ["about", "experience", "projects", "skills", "education", "connect"];
+  function setMenu(open, { returnFocus = false } = {}) {
+    const shouldOpen = Boolean(open && mobileNavQuery.matches);
+    nav.classList.toggle("nav--open", shouldOpen);
+    burger.setAttribute("aria-expanded", String(shouldOpen));
+    burger.setAttribute("aria-label", shouldOpen ? "Fermer le menu" : "Ouvrir le menu");
+    if (mobileNavQuery.matches && !shouldOpen) primaryNav.setAttribute("inert", "");
+    else primaryNav.removeAttribute("inert");
+    if (returnFocus) burger.focus({ preventScroll: true });
+  }
+
+  burger.addEventListener("click", () => setMenu(!nav.classList.contains("nav--open")));
+  function goToAnchor(hash, { updateHistory = true, focus = false } = {}) {
+    if (!hash || hash === "#") return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight - 16);
+    if (updateHistory && location.hash !== hash) history.pushState(null, "", hash);
+    window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
+    if (focus) {
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+      target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });
+    }
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const hash = link.getAttribute("href");
+      if (!hash || hash === "#") return;
+      event.preventDefault();
+      setMenu(false);
+      goToAnchor(hash, { focus: link.classList.contains("skip-link") });
+    });
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (nav.classList.contains("nav--open") && !nav.contains(event.target)) setMenu(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && nav.classList.contains("nav--open")) setMenu(false, { returnFocus: true });
+  });
+  const syncMenuMode = () => setMenu(false);
+  mobileNavQuery.addEventListener?.("change", syncMenuMode);
+  syncMenuMode();
+
+  /* ---------- Nav : fond, progression, retour haut et scroll-spy ---------- */
+  const spyIds = ["about", "experience", "projects", "skills", "education", "certifications", "languages", "connect"];
   const spySections = spyIds.map((id) => document.getElementById(id)).filter(Boolean);
   const navLinks = [...document.querySelectorAll(".nav__links a")];
-  window.addEventListener("scroll", () => {
+  const progress = document.getElementById("scrollProgress");
+  const toTop = document.getElementById("toTop");
+  let scrollTicking = false;
+
+  function updateScrollUI() {
+    scrollTicking = false;
     nav.classList.toggle("nav--scrolled", window.scrollY > 40);
-    // scroll-spy : surligne le lien de la section courante
-    const y = window.scrollY + 130;
+    toTop.classList.toggle("is-visible", window.scrollY > 620);
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    progress.style.transform = `scaleX(${Math.min(1, window.scrollY / maxScroll)})`;
+
+    const y = window.scrollY + Math.max(130, nav.offsetHeight + 48);
     let current = "";
     spySections.forEach((s) => { if (s.offsetTop <= y) current = s.id; });
-    navLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + current));
+    if (current === "languages") current = "certifications";
+    navLinks.forEach((a) => {
+      const active = a.getAttribute("href") === "#" + current;
+      a.classList.toggle("active", active);
+      if (active) a.setAttribute("aria-current", "location");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!scrollTicking) {
+      scrollTicking = true;
+      requestAnimationFrame(updateScrollUI);
+    }
+  }, { passive: true });
+  window.addEventListener("resize", updateScrollUI, { passive: true });
+  toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" }));
+  updateScrollUI();
+  window.addEventListener("hashchange", () => goToAnchor(location.hash, { updateHistory: false }));
+  window.addEventListener("load", () => {
+    if (location.hash) requestAnimationFrame(() => goToAnchor(location.hash, { updateHistory: false }));
   });
 
   /* ---------- Apparition au scroll ---------- */

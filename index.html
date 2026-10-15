@@ -3,70 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Yahya Elmoussaif — Data Scientist & AI Engineer. Projets IA/ML, expériences, compétences et certifications." />
-  <title>Yahya Elmoussaif — Data Scientist & AI Engineer</title>
+  <meta name="description" content="Portfolio de Yahya Elmoussaif — Ingénieur en Intelligence Artificielle & Big Data. Projets IA/ML, expériences et applications en production." />
+  <meta name="theme-color" content="#070a12" />
+  <title>Yahya Elmoussaif — Ingénieur IA & Data Scientist</title>
 
   <!-- Polices -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/style.css?v=15" />
+  <script>
+    (() => {
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light") document.documentElement.dataset.theme = "light";
+        if (!localStorage.getItem("yahya_portfolio_profile_v1")) {
+          document.documentElement.classList.add("onboarding-pending");
+        }
+      } catch (_) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=23" />
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">Aller au contenu</a>
+
+  <!-- ======================= ONBOARDING ======================= -->
+  <div class="onboarding" id="onboarding" aria-hidden="true">
+    <div class="onboarding__backdrop"></div>
+    <div class="onboarding__shell" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" tabindex="-1">
+      <div class="onboarding__aurora onboarding__aurora--one"></div>
+      <div class="onboarding__aurora onboarding__aurora--two"></div>
+
+      <header class="onboarding__top">
+        <div class="onboarding__brand" aria-label="Portfolio de Yahya Elmoussaif">
+          <span class="brand-monogram" aria-hidden="true">YE</span>
+          <span><strong>Yahya Elmoussaif</strong><small>AI Engineer · Portfolio</small></span>
+        </div>
+        <button class="onboarding__close" id="onboardingClose" type="button" aria-label="Fermer l’accueil">✕</button>
+      </header>
+
+      <div class="onboarding__progress" aria-label="Progression">
+        <span class="is-active" data-progress="1"></span>
+        <span data-progress="2"></span>
+        <span data-progress="3"></span>
+      </div>
+
+      <section class="onboarding__step is-active" data-step="1">
+        <div class="onboarding__copy">
+          <span class="onboarding__eyebrow" id="onboardingEyebrow">Bienvenue dans mon univers</span>
+          <h1 id="onboardingTitle">Bonjour, hello, مرحباً.</h1>
+          <p id="onboardingIntro">Un portfolio interactif où se rencontrent intelligence artificielle, produits web et expériences de terrain.</p>
+        </div>
+
+        <div class="hello-wall" aria-hidden="true">
+          <div class="hello-stream hello-stream--one"><div class="hello-stream__track">
+            <span>Bonjour<small>Français</small></span><span>Hello<small>English</small></span><span>مرحبا<small>العربية</small></span><span>Hola<small>Español</small></span><span>Ciao<small>Italiano</small></span>
+            <span>Bonjour<small>Français</small></span><span>Hello<small>English</small></span><span>مرحبا<small>العربية</small></span><span>Hola<small>Español</small></span><span>Ciao<small>Italiano</small></span>
+          </div></div>
+          <div class="hello-stream hello-stream--two"><div class="hello-stream__track">
+            <span>Olá<small>Português</small></span><span>你好<small>中文</small></span><span>Hallo<small>Deutsch</small></span><span>こんにちは<small>日本語</small></span><span>안녕하세요<small>한국어</small></span>
+            <span>Olá<small>Português</small></span><span>你好<small>中文</small></span><span>Hallo<small>Deutsch</small></span><span>こんにちは<small>日本語</small></span><span>안녕하세요<small>한국어</small></span>
+          </div></div>
+          <div class="hello-stream hello-stream--three"><div class="hello-stream__track">
+            <span>Salam<small>Darija</small></span><span>Namaste<small>हिन्दी</small></span><span>Merhaba<small>Türkçe</small></span><span>Hej<small>Svenska</small></span><span>Jambo<small>Kiswahili</small></span>
+            <span>Salam<small>Darija</small></span><span>Namaste<small>हिन्दी</small></span><span>Merhaba<small>Türkçe</small></span><span>Hej<small>Svenska</small></span><span>Jambo<small>Kiswahili</small></span>
+          </div></div>
+        </div>
+
+        <fieldset class="language-choice">
+          <legend id="languageLegend">Choisissez votre langue</legend>
+          <button type="button" class="language-choice__item is-selected" data-language="fr" aria-pressed="true"><span>FR</span><strong>Français</strong><small>Bonjour</small></button>
+          <button type="button" class="language-choice__item" data-language="en" aria-pressed="false"><span>EN</span><strong>English</strong><small>Hello</small></button>
+          <button type="button" class="language-choice__item" data-language="ar" aria-pressed="false"><span>AR</span><strong>العربية</strong><small>مرحباً</small></button>
+        </fieldset>
+
+        <div class="onboarding__actions onboarding__actions--end">
+          <button class="btn btn--primary" id="languageContinue" type="button">Continuer <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section class="onboarding__step" data-step="2" hidden>
+        <div class="onboarding__copy">
+          <span class="onboarding__eyebrow" id="profileEyebrow">Faisons connaissance</span>
+          <h2 id="profileTitle">Et vous, qui êtes-vous&nbsp;?</h2>
+          <p id="profileIntro">Quelques mots suffisent pour rendre votre visite plus personnelle.</p>
+        </div>
+
+        <form class="visitor-form" id="visitorForm">
+          <label class="field">
+            <span id="nameLabel">Comment puis-je vous appeler&nbsp;?</span>
+            <input id="visitorName" name="name" type="text" maxlength="40" autocomplete="given-name" placeholder="Votre prénom" />
+          </label>
+
+          <fieldset class="role-choice">
+            <legend id="roleLegend">Quel profil vous ressemble le plus&nbsp;?</legend>
+            <button type="button" data-role="recruiter" aria-pressed="false"><span>◎</span><strong data-role-label="recruiter">Recrutement</strong></button>
+            <button type="button" data-role="engineer" aria-pressed="false"><span>&lt;/&gt;</span><strong data-role-label="engineer">Tech & IA</strong></button>
+            <button type="button" data-role="student" aria-pressed="false"><span>◇</span><strong data-role-label="student">Étudiant·e</strong></button>
+            <button type="button" data-role="business" aria-pressed="false"><span>↗</span><strong data-role-label="business">Entreprise</strong></button>
+            <button type="button" data-role="curious" aria-pressed="false"><span>✦</span><strong data-role-label="curious">Curieux·se</strong></button>
+          </fieldset>
+
+          <label class="field">
+            <span id="professionLabel">Votre métier ou spécialité <small>(facultatif)</small></span>
+            <input id="visitorProfession" name="profession" type="text" maxlength="60" autocomplete="organization-title" placeholder="Ex. Talent Acquisition, Data Engineer…" />
+          </label>
+
+          <div class="onboarding__actions">
+            <button class="btn btn--ghost" id="profileBack" type="button"><span aria-hidden="true">←</span> Retour</button>
+            <button class="btn btn--primary" type="submit" id="profileContinue">Faire connaissance <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
+
+      <section class="onboarding__step onboarding__step--final" data-step="3" hidden>
+        <div class="onboarding__spark" aria-hidden="true">✦</div>
+        <span class="onboarding__eyebrow" id="welcomeEyebrow">Ravi de vous rencontrer</span>
+        <h2 id="welcomeTitle">Bienvenue dans mon portfolio.</h2>
+        <p id="welcomeText">Explorez mes projets, mon parcours et les produits IA que j’aime transformer en expériences concrètes.</p>
+        <div class="onboarding__summary" id="visitorSummary" hidden></div>
+        <button class="btn btn--primary btn--lg" id="enterPortfolio" type="button">Découvrir le portfolio <span aria-hidden="true">↗</span></button>
+      </section>
+
+      <button class="onboarding__skip" id="onboardingSkip" type="button">Explorer sans personnaliser</button>
+    </div>
+  </div>
+
   <!-- Barre de progression de lecture -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- Overlay global : éclairs qui suivent la souris (toute la page) -->
-  <canvas class="fx-canvas" id="fxCanvas"></canvas>
+  <canvas class="fx-canvas" id="fxCanvas" aria-hidden="true"></canvas>
 
   <!-- ======================= NAV ======================= -->
   <header class="nav" id="nav">
-    <a href="#hero" class="nav__logo">
-      <span class="nav__bolt">⚡</span> Yahya&nbsp;Elmoussaif
+    <a href="#hero" class="nav__logo" aria-label="Yahya Elmoussaif — accueil">
+      <span class="brand-monogram brand-monogram--nav" aria-hidden="true">YE</span>
+      <span class="nav__wordmark">Yahya&nbsp;Elmoussaif</span>
     </a>
-    <nav class="nav__links">
-      <a href="#about">À propos</a>
-      <a href="#experience">Expérience</a>
-      <a href="#projects">Projets</a>
-      <a href="#skills">Compétences</a>
-      <a href="#education">Formation</a>
-      <a href="#connect">Contact</a>
+    <nav class="nav__links" id="primaryNav" aria-label="Navigation principale">
+      <a href="#about" data-i18n="nav.about">À propos</a>
+      <a href="#experience" data-i18n="nav.experience">Expérience</a>
+      <a href="#projects" data-i18n="nav.projects">Projets</a>
+      <a href="#skills" data-i18n="nav.skills">Compétences</a>
+      <a href="#education" data-i18n="nav.education">Formation</a>
+      <a href="#certifications" data-i18n="nav.certifications">Certifications</a>
+      <a href="#connect" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav__right">
-      <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème" title="Thème clair / sombre">
-        <span class="theme-toggle__icon">🌙</span>
+      <button class="locale-toggle" id="localeToggle" type="button" aria-label="Changer la langue et le profil" title="Langue et profil">
+        <span id="localeCode">FR</span>
       </button>
-      <button class="nav__burger" id="burger" aria-label="Menu">
+      <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème" title="Thème clair / sombre">
+        <span class="theme-toggle__icon" aria-hidden="true">◐</span>
+      </button>
+      <button class="nav__burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-controls="primaryNav" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
   <!-- ======================= HERO ======================= -->
+  <main id="mainContent">
   <section class="hero" id="hero">
-    <canvas class="hero__canvas" id="heroCanvas"></canvas>
+    <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
     <div class="hero__inner">
+      <p class="visitor-greeting" id="visitorGreeting" hidden></p>
       <span class="hero__badge">
-        <span class="hero__badge-dot"></span> Disponible — PFE &amp; opportunités IA
+        <span class="hero__badge-dot"></span> <span data-i18n="hero.available">Disponible pour des opportunités IA</span>
       </span>
-      <p class="hero__kicker">
-        <span class="hero__prompt">~/yahya</span>
-        <span class="hero__rotator" id="heroRotator"></span><span class="hero__caret"></span>
-      </p>
       <h1 class="hero__title">
-        Salut, moi c'est <span class="grad">Yahya</span>.<br />
-        Je construis de l'<span class="flash">IA</span> qui passe en prod.
+        <span class="hero__name">Yahya Elmoussaif</span>
+        <span class="hero__role" data-i18n="hero.role">Ingénieur en Intelligence Artificielle &amp; Big Data</span>
       </h1>
-      <p class="hero__sub">
-        Élève-ingénieur en Intelligence Artificielle &amp; Big Data à l'ISGA (Rabat).
-        Du modèle à l'interface : pipelines ML, LLMs et applications web déployées
-        en production.
-      </p>
+      <p class="hero__sub" data-i18n="hero.sub">Data Science · Machine Learning · LLMs · Applications web</p>
+      <ul class="hero__meta" aria-label="Informations clés">
+        <li><span aria-hidden="true">⌁</span> Rabat, Maroc</li>
+        <li><span aria-hidden="true">✦</span> IA appliquée</li>
+        <li><span aria-hidden="true">↗</span> Produits en production</li>
+      </ul>
       <div class="hero__cta">
-        <a href="#projects" class="btn btn--primary magnetic">Voir mes projets</a>
-        <a href="#connect" class="btn btn--ghost magnetic">Me contacter</a>
-        <a href="https://github.com/ELD1AVOLO" target="_blank" rel="noopener" class="btn btn--ghost magnetic">GitHub ↗</a>
+        <a href="#projects" class="btn btn--primary magnetic" data-i18n="hero.projects">Découvrir mes projets</a>
+        <a href="#connect" class="btn btn--ghost magnetic" data-i18n="hero.contact">Me contacter</a>
       </div>
     </div>
     <a href="#about" class="hero__scroll" aria-label="Descendre">
@@ -78,14 +197,13 @@
   <section class="about" id="about">
     <div class="section__head">
       <span class="section__no">01</span>
-      <h2 class="section__title">À propos</h2>
+      <h2 class="section__title" data-i18n="section.about">À propos</h2>
     </div>
     <div class="about__grid">
       <div class="about__bio">
         <p>
-          Je suis <strong>Yahya Elmoussaif</strong>, <strong>Data Scientist & AI Engineer</strong>
-          basé à Rabat. Je termine mon diplôme d'ingénieur en Intelligence Artificielle
-          & Big Data à l'<strong>ISGA</strong>.
+          Je suis <strong>Yahya Elmoussaif</strong>, <strong>Ingénieur IA &amp; Data Scientist</strong>
+          basé à Rabat et formé en Intelligence Artificielle &amp; Big Data à l'<strong>ISGA</strong>.
         </p>
         <p>
           J'aime construire de bout en bout : collecter et nettoyer la donnée,
@@ -100,13 +218,13 @@
           <div class="about__avatar"><span>YE</span><i class="about__avatar-pulse"></i></div>
           <div class="about__id">
             <strong>Yahya Elmoussaif</strong>
-            <span class="about__status"><i></i> Data Scientist @ Attijariwafa Bank</span>
+            <span class="about__status"><i></i> AI Engineer · Data Scientist</span>
           </div>
         </div>
         <ul class="facts">
           <li><span>📍 Localisation</span><strong>Rabat, Maroc</strong></li>
-          <li><span>💼 Actuellement</span><strong>Data Scientist @ Attijariwafa Bank</strong></li>
-          <li><span>🎓 Formation</span><strong>Ing. IA & Big Data — ISGA</strong></li>
+          <li><span>💼 Spécialité</span><strong>IA appliquée · Data Science</strong></li>
+          <li><span>🎓 Formation</span><strong>Ingénierie IA &amp; Big Data — ISGA</strong></li>
           <li><span>🌐 Langues</span><strong>FR (C2) · EN (B2) · AR (natif)</strong></li>
         </ul>
       </div>
@@ -117,7 +235,7 @@
   <section class="experience" id="experience">
     <div class="section__head">
       <span class="section__no">02</span>
-      <h2 class="section__title">Expérience</h2>
+      <h2 class="section__title" data-i18n="section.experience">Expérience</h2>
     </div>
     <div class="timeline">
       <article class="tl-item">
@@ -126,7 +244,12 @@
           <span class="tl-date">Fév. – Août 2026</span>
           <h3 class="tl-role">Stagiaire Data Scientist / AI Engineer</h3>
           <span class="tl-org">Attijariwafa Bank · Casablanca</span>
-          <div class="tl-logos"><img src="assets/attijariwafa.svg" alt="Attijariwafa Bank" onerror="this.style.display='none'" /></div>
+          <div class="tl-logos">
+            <a class="brand-logo brand-logo--wide" href="https://www.attijariwafabank.com/" target="_blank" rel="noopener" aria-label="Site officiel Attijariwafa bank">
+              <img src="https://ir.attijariwafabank.com/sites/g/files/knoqqb15906/themes/site/nir_pid1467/client/images/ATTIJARIWAFA_LOGO_GROUPE_CMJN.png" data-fallback-src="https://thumb.wikimedia.org/wikipedia/fr/thumb/1/1d/Logo_AWB.svg/langfr-500px-Logo_AWB.svg.png" alt="Attijariwafa bank" />
+              <span class="brand-logo__fallback">Attijariwafa bank</span>
+            </a>
+          </div>
           <ul class="tl-points">
             <li>Plateforme IA d'aide à la décision pour les traders Forex : pipeline NLP (FinBERT), modèles LightGBM (UP/DOWN/FLAT), scraping de 30+ sources RSS, indicateurs techniques (Fibonacci, EMA, Bollinger, Ichimoku), réentraînement automatique toutes les 12h.</li>
             <li>Architecture trois-tiers : React + TypeScript (dashboard), Spring Boot (proxy API REST), Flask/Python (inférence ML) — déployée en salle des marchés internationale.</li>
@@ -140,7 +263,12 @@
           <span class="tl-date">Sept. 2025 – Jan. 2026</span>
           <h3 class="tl-role">AI Engineer Intern</h3>
           <span class="tl-org">McLeuker · Paris, France</span>
-          <div class="tl-logos"><img src="assets/mcleuker.svg" alt="McLeuker" onerror="this.style.display='none'" /></div>
+          <div class="tl-logos">
+            <a class="brand-logo brand-logo--dark" href="https://www.mcleuker.com/" target="_blank" rel="noopener" aria-label="Site officiel McLeuker">
+              <img src="https://www.mcleuker.com/mcleuker-logo.png" alt="McLeuker" />
+              <span class="brand-logo__fallback">McLeuker</span>
+            </a>
+          </div>
           <ul class="tl-points">
             <li>Développement de modèles ML et de LLMs pour la recommandation, le scoring et l'analyse prédictive sur des datasets complexes.</li>
             <li>EDA, visualisation de données et feature engineering pour soutenir la prise de décision.</li>
@@ -155,8 +283,14 @@
           <h3 class="tl-role">Stagiaire Développeur IA</h3>
           <span class="tl-org">Works Platforme / Caciopee · Rabat</span>
           <div class="tl-logos">
-            <img src="assets/works-platform.svg" alt="Works Platform" onerror="this.style.display='none'" />
-            <img src="assets/caciopee.svg" alt="Caciopee" onerror="this.style.display='none'" />
+            <a class="brand-logo" href="https://worksplatform.com/works/" target="_blank" rel="noopener" aria-label="Site officiel Works Platform">
+              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQHdRZwIQChpRQ/company-logo_200_200/B4EaC.neUbIIAE-/0/1789904414250/worksplatform_logo?e=2147483647&amp;v=beta&amp;t=vkbVnDFGYGEKiqQKrzT8tp8SsdozOeZovHkdfYNbJcM" alt="Works Platform" />
+              <span class="brand-logo__fallback">Works Platform</span>
+            </a>
+            <a class="brand-logo" href="https://www.caciopee.com/" target="_blank" rel="noopener" aria-label="Site officiel Caciopee">
+              <img src="https://www.caciopee.com/images/Caciopee_Logo.png" alt="Caciopee" />
+              <span class="brand-logo__fallback">Caciopee</span>
+            </a>
           </div>
           <ul class="tl-points">
             <li>Création d'<strong>AUTOM</strong> : outil IA générant des maquettes UI interactives à partir de données XML métier via des LLMs.</li>
@@ -171,7 +305,12 @@
           <span class="tl-date">Sept. – Oct. 2024</span>
           <h3 class="tl-role">Stagiaire Web</h3>
           <span class="tl-org">POL IT · Casablanca</span>
-          <div class="tl-logos"><img src="assets/pol-it.svg" alt="POL IT" onerror="this.style.display='none'" /></div>
+          <div class="tl-logos">
+            <a class="brand-logo brand-logo--dark" href="https://pol-it.ma/" target="_blank" rel="noopener" aria-label="Site officiel POL IT">
+              <img src="https://pol-it.ma/images/logo.png" alt="POL IT" />
+              <span class="brand-logo__fallback">POL IT</span>
+            </a>
+          </div>
           <ul class="tl-points">
             <li>Développement d'applications web (Laravel/Symfony), traitement de données utilisateurs et automatisation JavaScript.</li>
           </ul>
@@ -184,7 +323,12 @@
           <span class="tl-date">Août – Sept. 2023</span>
           <h3 class="tl-role">Stagiaire Observateur</h3>
           <span class="tl-org">POL IT · Casablanca</span>
-          <div class="tl-logos"><img src="assets/pol-it.svg" alt="POL IT" onerror="this.style.display='none'" /></div>
+          <div class="tl-logos">
+            <a class="brand-logo brand-logo--dark" href="https://pol-it.ma/" target="_blank" rel="noopener" aria-label="Site officiel POL IT">
+              <img src="https://pol-it.ma/images/logo.png" alt="POL IT" />
+              <span class="brand-logo__fallback">POL IT</span>
+            </a>
+          </div>
           <ul class="tl-points">
             <li>Contribution à <strong>Jortal</strong> — plateforme d'emploi avec matching intelligent CV/offres via analyse sémantique.</li>
           </ul>
@@ -197,8 +341,8 @@
   <section class="projects" id="projects">
     <div class="section__head">
       <span class="section__no">03</span>
-      <h2 class="section__title">Projets</h2>
-      <p class="section__hint">Clique sur une carte pour ouvrir le projet ⚡</p>
+      <h2 class="section__title" data-i18n="section.projects">Projets</h2>
+      <p class="section__hint" data-i18n="section.projectsHint">Sélectionnez un projet pour découvrir son histoire et sa démo.</p>
     </div>
     <!-- Les cartes sont générées par JS depuis js/projects.js -->
     <div class="cards" id="cards"></div>
@@ -208,8 +352,8 @@
   <section class="skills" id="skills">
     <div class="section__head">
       <span class="section__no">04</span>
-      <h2 class="section__title">Compétences techniques</h2>
-      <p class="section__hint">Le cœur de mon stack, du modèle à la mise en prod.</p>
+      <h2 class="section__title" data-i18n="section.skills">Compétences techniques</h2>
+      <p class="section__hint" data-i18n="section.skillsHint">Le cœur de mon stack, du modèle à la mise en production.</p>
     </div>
 
     <div class="skillset">
@@ -273,12 +417,12 @@
   <section class="education" id="education">
     <div class="section__head">
       <span class="section__no">05</span>
-      <h2 class="section__title">Formation</h2>
+      <h2 class="section__title" data-i18n="section.education">Formation</h2>
     </div>
     <div class="edu">
       <article class="edu__item">
         <a class="edu__photo" href="https://isga.ma/" target="_blank" rel="noopener" data-label="ISGA" title="Visiter isga.ma">
-          <img src="assets/isga.svg" alt="ISGA Rabat" onerror="this.parentElement.classList.add('no-img')" />
+          <img src="https://info.isga.ma/hs-fs/hubfs/isga-logo-ISGA-ROUGE%20et%20gris-1.png" data-fallback-src="https://isga.ma/wp-content/uploads/2025/04/logo-grey.png" alt="ISGA Rabat" />
         </a>
         <div class="edu__body">
           <span class="edu__date">2021 – 2026</span>
@@ -289,8 +433,8 @@
       </article>
 
       <article class="edu__item">
-        <div class="edu__photo" data-label="Lycée Moulay Youssef">
-          <img src="assets/moulay-youssef.svg" alt="Lycée Moulay Youssef" onerror="this.parentElement.classList.add('no-img')" />
+        <div class="edu__photo edu__photo--wordmark" data-label="Lycée Moulay Youssef">
+          <strong>Lycée<br />Moulay Youssef</strong><small>Rabat · depuis 1916</small>
         </div>
         <div class="edu__body">
           <span class="edu__date">2020 – 2021</span>
@@ -305,45 +449,45 @@
   <section class="certifications" id="certifications">
     <div class="section__head">
       <span class="section__no">06</span>
-      <h2 class="section__title">Certifications</h2>
+      <h2 class="section__title" data-i18n="section.certifications">Certifications</h2>
     </div>
     <div class="certs">
       <a class="cert" href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=1A46498CA8F40DE4063FC24EA1F23C369F93D2C2E2E21D0A244A8CAD5DFB439E" target="_blank" rel="noopener">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/oracle.svg" alt="Oracle" /></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img src="https://www.oracle.com/a/ocom/img/oracle-logo.svg" alt="Oracle" /></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">OCI 2025 Data Science Professional</h3>
         <p class="cert__meta">Identifiant : OC7653617</p>
         <span class="cert__link">Voir le badge ↗</span>
       </a>
 
       <div class="cert">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/laravel.svg" alt="Laravel" /></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img src="https://laravel.com/img/logotype.min.svg" alt="Laravel" /></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">Certified Laravel Developer</h3>
         <p class="cert__meta">Certification officielle Laravel</p>
       </div>
 
       <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/PGSA59IUE5VS" target="_blank" rel="noopener">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img src="https://www.ibm.com/design/language/2285fa814297ab5eb0ffa21d2ee009db/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">Data Visualization and Dashboards with Excel and Cognos</h3>
         <p class="cert__meta">Power BI · Excel · Cognos · Data Viz</p>
         <span class="cert__link">Voir le diplôme ↗</span>
       </a>
 
       <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/214HOEVB41K5" target="_blank" rel="noopener">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img src="https://www.ibm.com/design/language/2285fa814297ab5eb0ffa21d2ee009db/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">Introduction to Data Analytics</h3>
         <p class="cert__meta">Identifiant : 214HOEVB41K5</p>
         <span class="cert__link">Voir le diplôme ↗</span>
       </a>
 
       <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/8ITD29ZMKWCW" target="_blank" rel="noopener">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img src="https://www.ibm.com/design/language/2285fa814297ab5eb0ffa21d2ee009db/ibm.svg" alt="IBM" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">Excel Basics for Data Analysis</h3>
         <p class="cert__meta">Pivot Tables · Data Manipulation · Cleaning</p>
         <span class="cert__link">Voir le diplôme ↗</span>
       </a>
 
       <a class="cert" href="https://www.coursera.org/account/accomplishments/verify/TOAKPB3RHIU9" target="_blank" rel="noopener">
-        <div class="cert__top"><span class="cert__logo"><img src="assets/google.svg" alt="Google" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
+        <div class="cert__top"><span class="cert__logo"><img class="cert__logo--google" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google" /><small>Coursera</small></span><span class="cert__date">Nov. 2025</span></div>
         <h3 class="cert__title">Foundations: Data, Data, Everywhere</h3>
         <p class="cert__meta">Identifiant : TOAKPB3RHIU9</p>
         <span class="cert__link">Voir le diplôme ↗</span>
@@ -355,7 +499,7 @@
   <section class="languages" id="languages">
     <div class="section__head">
       <span class="section__no">07</span>
-      <h2 class="section__title">Langues</h2>
+      <h2 class="section__title" data-i18n="section.languages">Langues</h2>
     </div>
     <div class="langs">
       <div class="lang"><span class="lang__flag">🇫🇷</span><div><strong>Français</strong><span>Courant — TCF C2</span></div></div>
@@ -366,13 +510,11 @@
 
   <!-- ======================= CONNECT / CONTACT ======================= -->
   <section class="connect" id="connect">
-    <canvas class="connect__canvas" id="connectCanvas"></canvas>
+    <canvas class="connect__canvas" id="connectCanvas" aria-hidden="true"></canvas>
     <div class="connect__inner">
       <span class="section__no">08</span>
-      <h2 class="connect__title">On se <span class="grad">connecte</span> ?</h2>
-      <p class="connect__sub">
-        Un projet, une opportunité, ou juste envie d'échanger sur l'IA — ma boîte mail est ouverte.
-      </p>
+      <h2 class="connect__title grad" data-i18n="section.contact">On se connecte ?</h2>
+      <p class="connect__sub" data-i18n="section.contactText">Un projet, une opportunité, ou simplement envie d’échanger sur l’IA ? Ma boîte mail est ouverte.</p>
       <a href="mailto:elmoussaifmail@gmail.com" class="btn btn--primary btn--lg">
         elmoussaifmail@gmail.com
       </a>
@@ -382,20 +524,21 @@
       </div>
       <div class="connect__socials">
         <a href="https://github.com/ELD1AVOLO" target="_blank" rel="noopener">GitHub</a>
-        <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/yahya-elmoussaif-aa6b65298" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
 
   <footer class="footer">
-    <p>© <span id="year"></span> Yahya Elmoussaif — Conçu avec ⚡ et beaucoup de café.</p>
+    <p>© <span id="year"></span> Yahya Elmoussaif · <span data-i18n="footer.text">Conçu avec précision, curiosité et une touche d’électricité.</span></p>
   </footer>
+  </main>
 
   <!-- ======================= MODAL (grande fenêtre projet) ======================= -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal__backdrop" data-close></div>
-    <div class="modal__window" role="dialog" aria-modal="true">
-      <canvas class="modal__canvas" id="modalCanvas"></canvas>
+    <div class="modal__window" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" tabindex="-1">
+      <canvas class="modal__canvas" id="modalCanvas" aria-hidden="true"></canvas>
       <button class="modal__close" data-close aria-label="Fermer">✕</button>
 
       <div class="modal__content">
@@ -425,6 +568,7 @@
   <!-- Scripts -->
   <script src="js/lightning.js?v=3"></script>
   <script src="js/projects.js?v=11"></script>
-  <script src="js/main.js?v=15"></script>
+  <script src="js/onboarding.js?v=2"></script>
+  <script src="js/main.js?v=23"></script>
 </body>
 </html>

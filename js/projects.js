@@ -59,7 +59,7 @@ const PROJECTS = [
       "Persistance locale (IndexedDB + Zustand)",
     ],
     tech: ["React", "TypeScript", "Vite", "CodeMirror 6", "Node.js", "TeX Live", "Yjs", "isomorphic-git"],
-    links: [{ label: "Code", url: "#" }],
+    links: [],
     preview: { type: "lightning" },
     accent: "#b14cff",
   },
@@ -83,8 +83,8 @@ const PROJECTS = [
     links: [{ label: "Code", url: "https://github.com/ELD1AVOLO/AUTOMN_AI_AGENT" }],
     // Logos des entités où le projet a été réalisé (affichés dans la fenêtre)
     orgLogos: [
-      { src: "assets/works-platform.svg", alt: "Works Platform" },
-      { src: "assets/caciopee.svg", alt: "Caciopee" },
+      { src: "https://media.licdn.com/dms/image/v2/D4E0BAQHdRZwIQChpRQ/company-logo_200_200/B4EaC.neUbIIAE-/0/1789904414250/worksplatform_logo?e=2147483647&v=beta&t=vkbVnDFGYGEKiqQKrzT8tp8SsdozOeZovHkdfYNbJcM", alt: "Works Platform", url: "https://worksplatform.com/works/" },
+      { src: "https://www.caciopee.com/images/Caciopee_Logo.png", alt: "Caciopee", url: "https://www.caciopee.com/" },
     ],
     preview: {
       type: "app",
@@ -116,7 +116,7 @@ const PROJECTS = [
       "Visualisation des tendances de recrutement",
     ],
     tech: ["Laravel", "PHP", "NLP", "MySQL"],
-    links: [{ label: "Code", url: "#" }],
+    links: [],
     preview: { type: "lightning" },
     accent: "#00f5a0",
   },
