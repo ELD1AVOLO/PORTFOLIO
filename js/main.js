@@ -32,15 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
       fx:      { glow: "#4cc9f0", color: "#9fd8ff", core: "#ffffff", blend: "screen" },
       hero:    { glow: "#4cc9f0", color: "#9fd8ff", core: "#ffffff", bg: "rgba(5,6,12,0.32)" },
       connect: { glow: "#b14cff", color: "#e6c6ff", core: "#ffffff", bg: "rgba(5,6,12,0.32)" },
-      modalCore: "#ffffff", modalBg: "rgba(8,10,18,0.40)", icon: "◐",
+      modalCore: "#ffffff", modalBg: "rgba(8,10,18,0.40)", icon: "moon",
     },
     light: {
       fx:      { glow: "#7c3aed", color: "#4c1d95", core: "#160a36", blend: "multiply" },
       hero:    { glow: "#7c3aed", color: "#5b21b6", core: "#160a36", bg: "rgba(245,246,251,0.34)" },
       connect: { glow: "#2563eb", color: "#1e3a8a", core: "#0b1030", bg: "rgba(245,246,251,0.34)" },
-      modalCore: "#160a36", modalBg: "rgba(245,246,251,0.42)", icon: "☼",
+      modalCore: "#160a36", modalBg: "rgba(245,246,251,0.42)", icon: "sun",
     },
   };
+  // Icône du sprite SVG défini en haut de index.html
+  const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+
   const savedTheme = safeStorage.get("theme");
   let currentTheme = savedTheme === "light" || savedTheme === "dark"
     ? savedTheme
@@ -74,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fx?.configure(t.fx);
     hero?.configure(t.hero);
     connect?.configure(t.connect);
-    document.querySelector("#themeToggle .theme-toggle__icon").textContent = t.icon;
+    document.querySelector("#themeToggle .theme-toggle__icon").innerHTML = icon(t.icon);
     const themeButton = document.getElementById("themeToggle");
     themeButton.setAttribute("aria-pressed", String(name === "light"));
     themeButton.setAttribute("aria-label", name === "light" ? "Activer le thème sombre" : "Activer le thème clair");
@@ -158,9 +161,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const INTERFACE_COPY = {
-    fr: { open: "Ouvrir le projet", close: "Fermer", madeAt: "Réalisé chez", interactive: "Démo interactive (données factices) — naviguez à l’intérieur", reload: "Relancer la démo", live: "En production", contribution: "Contribution", personal: "Projet perso" },
-    en: { open: "Open project", close: "Close", madeAt: "Built at", interactive: "Interactive demo (sample data) — explore inside", reload: "Restart demo", live: "In production", contribution: "Contribution", personal: "Personal project" },
-    ar: { open: "افتح المشروع", close: "إغلاق", madeAt: "أُنجز لدى", interactive: "تجربة تفاعلية ببيانات تجريبية", reload: "إعادة تشغيل العرض", live: "قيد الإنتاج", contribution: "مساهمة", personal: "مشروع شخصي" },
+    fr: {
+      open: "Ouvrir le projet", close: "Fermer", madeAt: "Réalisé chez", interactive: "Démo interactive (données factices) — naviguez à l’intérieur", reload: "Relancer la démo", live: "En production", contribution: "Contribution", personal: "Projet perso",
+      demoLive: "Démo interactive", demoSoon: "Démo à venir",
+      soonEyebrow: "Démo bientôt disponible", soonTitle: "Désolé, la démo de ce projet n’est pas encore en ligne.",
+      soonText: "Je prépare une version interactive. En attendant, le détail du projet et sa stack technique sont juste à côté.",
+      askDemo: "Demander une présentation", askDemoSubject: (t) => `Présentation du projet ${t}`,
+      sending: "Envoi en cours…", sent: "Merci ! Votre message a bien été envoyé, je vous réponds rapidement.",
+      invalid: "Merci de renseigner votre nom, un email valide et votre message.",
+      failed: "L’envoi a échoué. Votre messagerie va s’ouvrir pour l’envoyer directement.",
+    },
+    en: {
+      open: "Open project", close: "Close", madeAt: "Built at", interactive: "Interactive demo (sample data) — explore inside", reload: "Restart demo", live: "In production", contribution: "Contribution", personal: "Personal project",
+      demoLive: "Interactive demo", demoSoon: "Demo coming soon",
+      soonEyebrow: "Demo coming soon", soonTitle: "Sorry, the demo for this project isn’t online yet.",
+      soonText: "I’m preparing an interactive version. In the meantime, the project details and tech stack are right next to this.",
+      askDemo: "Request a walkthrough", askDemoSubject: (t) => `Walkthrough of ${t}`,
+      sending: "Sending…", sent: "Thank you! Your message has been sent, I’ll get back to you quickly.",
+      invalid: "Please enter your name, a valid email and your message.",
+      failed: "Sending failed. Your email app will open so you can send it directly.",
+    },
+    ar: {
+      open: "افتح المشروع", close: "إغلاق", madeAt: "أُنجز لدى", interactive: "تجربة تفاعلية ببيانات تجريبية", reload: "إعادة تشغيل العرض", live: "قيد الإنتاج", contribution: "مساهمة", personal: "مشروع شخصي",
+      demoLive: "عرض تفاعلي", demoSoon: "العرض قريباً",
+      soonEyebrow: "العرض التجريبي قريباً", soonTitle: "عذراً، العرض التجريبي لهذا المشروع غير متاح بعد.",
+      soonText: "أعمل على نسخة تفاعلية. في الأثناء، تجد تفاصيل المشروع والتقنيات المستخدمة بجانب هذا النص.",
+      askDemo: "اطلب عرضاً للمشروع", askDemoSubject: (t) => `عرض مشروع ${t}`,
+      sending: "جارٍ الإرسال…", sent: "شكراً! تم إرسال رسالتك، وسأرد عليك قريباً.",
+      invalid: "يرجى إدخال اسمك وبريد إلكتروني صحيح ورسالتك.",
+      failed: "تعذّر الإرسال. سيُفتح تطبيق البريد لإرسالها مباشرة.",
+    },
   };
   const interfaceLanguage = () => ["fr", "en", "ar"].includes(document.documentElement.lang) ? document.documentElement.lang : "fr";
   const interfaceText = () => INTERFACE_COPY[interfaceLanguage()];
@@ -184,6 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.style.setProperty("--accent", p.accent || "#4cc9f0");
     card.style.animationDelay = `${i * 80}ms`;
     const isLive = /prod/i.test(p.status || "");
+    const hasDemo = !!(p.preview && p.preview.type === "app" && p.preview.url);
     const techPreview = (p.tech || []).slice(0, 4)
       .map((t) => `<span>${t}</span>`).join("");
     card.innerHTML = `
@@ -196,7 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <h3 class="card__title">${p.title}</h3>
       <p class="card__short">${p.short}</p>
       <div class="card__stack">${techPreview}${(p.tech || []).length > 4 ? `<span class="card__more">+${p.tech.length - 4}</span>` : ""}</div>
-      <span class="card__open">${interfaceText().open} <b>⚡</b></span>
+      <div class="card__foot">
+        <span class="card__open">${interfaceText().open} ${icon("arrow")}</span>
+        <span class="card__demo ${hasDemo ? "is-ready" : ""}">${icon(hasDemo ? "play" : "clock")}<span>${hasDemo ? interfaceText().demoLive : interfaceText().demoSoon}</span></span>
+      </div>
     `;
     card.addEventListener("click", () => openModal(p, card));
     attachTilt(card);
@@ -209,7 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const project = card._project;
       if (!project) return;
       const openLabel = card.querySelector(".card__open");
-      if (openLabel) openLabel.innerHTML = `${interfaceText().open} <b>⚡</b>`;
+      if (openLabel) openLabel.innerHTML = `${interfaceText().open} ${icon("arrow")}`;
+      const demo = card.querySelector(".card__demo > span");
+      if (demo) demo.textContent = card.querySelector(".card__demo").classList.contains("is-ready") ? interfaceText().demoLive : interfaceText().demoSoon;
       const status = card.querySelector(".card__status > span");
       if (status) status.textContent = translatedStatus(project.status);
       card.setAttribute("aria-label", `${project.title} — ${interfaceText().open}`);
@@ -349,13 +385,13 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="browser__bar">
                 <span class="browser__dots"><i></i><i></i><i></i></span>
                 <span class="browser__url">${pv.fakeUrl || "localhost:3000"}</span>
-                <button class="browser__reload" id="appReload" type="button" aria-label="${interfaceText().reload}" title="${interfaceText().reload}">⟳</button>
+                <button class="browser__reload" id="appReload" type="button" aria-label="${interfaceText().reload}" title="${interfaceText().reload}">${icon("reload")}</button>
               </div>
               <div class="browser__viewport" id="appViewport">
                 <iframe class="browser__frame" id="appFrame" title="${p.title}"></iframe>
               </div>
             </div>
-            <p class="appsim__hint">${interfaceText().interactive} ⚡</p>
+            <p class="appsim__hint">${interfaceText().interactive}</p>
           </div>
         </div>`;
       const boot = pv.boot || ["$ npm run dev", "▲ démarrage du serveur…", "✓ compilé avec succès",
@@ -407,8 +443,23 @@ document.addEventListener("DOMContentLoaded", () => {
       stage.innerHTML = `<div class="sim sim--code"><div class="sim__bar"><i></i><i></i><i></i></div><pre id="simPre"></pre></div>`;
       typeLines(pv.lines || [], document.getElementById("simPre"), null, run);
     } else {
-      // ambiance pure : seulement les éclairs derrière
-      stage.innerHTML = `<div class="sim sim--ambient"><span>⚡</span><p>${p.title}</p></div>`;
+      // pas encore de démo jouable : message "démo à venir" + demande de présentation
+      const copy = interfaceText();
+      stage.innerHTML = `
+        <div class="sim sim--soon">
+          <span class="soon__icon">${icon("clock")}</span>
+          <span class="soon__eyebrow">${copy.soonEyebrow}</span>
+          <p class="soon__title">${copy.soonTitle}</p>
+          <p class="soon__text">${copy.soonText}</p>
+          <button class="btn btn--ghost btn--sm" type="button" id="askDemo">${copy.askDemo} ${icon("arrow")}</button>
+        </div>`;
+      document.getElementById("askDemo").addEventListener("click", () => {
+        closeModal();
+        const subject = document.getElementById("contactSubject");
+        if (subject) subject.value = copy.askDemoSubject(p.title);
+        goToAnchor("#connect");
+        setTimeout(() => document.getElementById("contactForm")?.querySelector("input[name=name]")?.focus({ preventScroll: true }), reducedMotion ? 0 : 700);
+      });
     }
   }
 
@@ -437,6 +488,65 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     tick();
+  }
+
+  /* ---------- Formulaire de contact ---------- */
+  // Envoi via FormSubmit (pas de serveur à gérer). Le tout premier envoi déclenche
+  // un email d'activation à CONTACT_EMAIL : il suffit de cliquer sur "Activate".
+  const CONTACT_EMAIL = "elmoussaifmail@gmail.com";
+  const CONTACT_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    const status = document.getElementById("contactStatus");
+    const submit = document.getElementById("contactSubmit");
+    const setStatus = (text, state = "") => { status.textContent = text; status.dataset.state = state; };
+
+    contactForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(contactForm));
+      if (data._honey) return; // champ piège rempli => robot
+      const name = String(data.name || "").trim();
+      const email = String(data.email || "").trim();
+      const subject = String(data.subject || "").trim();
+      const message = String(data.message || "").trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      contactForm.querySelectorAll("[required]").forEach((field) => {
+        const invalid = !field.value.trim() || (field.type === "email" && !emailOk);
+        field.setAttribute("aria-invalid", String(invalid));
+      });
+      if (!name || !emailOk || !message) { setStatus(interfaceText().invalid, "error"); return; }
+
+      submit.disabled = true;
+      setStatus(interfaceText().sending, "pending");
+      try {
+        const response = await fetch(CONTACT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            name, email, message,
+            _subject: `Portfolio — ${subject || "Nouveau message"} (${name})`,
+            _replyto: email,
+            _template: "table",
+            _captcha: "false",
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || String(result.success) === "false") throw new Error(result.message || String(response.status));
+        contactForm.reset();
+        contactForm.querySelectorAll("[aria-invalid]").forEach((field) => field.removeAttribute("aria-invalid"));
+        setStatus(interfaceText().sent, "success");
+      } catch (_) {
+        // repli : ouvre la messagerie du visiteur avec le message pré-rempli
+        setStatus(interfaceText().failed, "error");
+        const body = `${message}\n\n— ${name} (${email})`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject || "Contact portfolio")}&body=${encodeURIComponent(body)}`;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    contactForm.addEventListener("input", (event) => {
+      if (event.target.getAttribute("aria-invalid") === "true") event.target.setAttribute("aria-invalid", "false");
+    });
   }
 
   /* ---------- Nav : burger mobile ---------- */

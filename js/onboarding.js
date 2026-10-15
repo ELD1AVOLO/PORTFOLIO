@@ -34,7 +34,21 @@
         "section.certifications": "Certifications",
         "section.languages": "Langues",
         "section.contact": "On se connecte ?",
-        "section.contactText": "Un projet, une opportunité, ou simplement envie d’échanger sur l’IA ? Ma boîte mail est ouverte.",
+        "section.contactText": "Un projet, une opportunité, ou simplement envie d’échanger sur l’IA ? Laissez-moi un message, je vous réponds rapidement.",
+        "hero.metaLocation": "Rabat, Maroc",
+        "hero.metaApplied": "IA appliquée",
+        "hero.metaProd": "Produits en production",
+        "contact.phone": "Téléphone",
+        "contact.location": "Localisation",
+        "contact.formTitle": "Envoyez-moi un message",
+        "contact.name": "Nom",
+        "contact.namePlaceholder": "Votre nom",
+        "contact.email": "Email",
+        "contact.subject": "Sujet",
+        "contact.subjectPlaceholder": "Opportunité, projet, question…",
+        "contact.message": "Message",
+        "contact.messagePlaceholder": "Bonjour Yahya, …",
+        "contact.send": "Envoyer le message",
         "footer.text": "Conçu avec précision, curiosité et une touche d’électricité."
       },
       onboarding: {
@@ -95,7 +109,21 @@
         "section.certifications": "Certifications",
         "section.languages": "Languages",
         "section.contact": "Let’s connect.",
-        "section.contactText": "Have a project, an opportunity, or simply want to talk about AI? My inbox is open.",
+        "section.contactText": "Have a project, an opportunity, or simply want to talk about AI? Leave me a message and I’ll get back to you quickly.",
+        "hero.metaLocation": "Rabat, Morocco",
+        "hero.metaApplied": "Applied AI",
+        "hero.metaProd": "Shipped to production",
+        "contact.phone": "Phone",
+        "contact.location": "Location",
+        "contact.formTitle": "Send me a message",
+        "contact.name": "Name",
+        "contact.namePlaceholder": "Your name",
+        "contact.email": "Email",
+        "contact.subject": "Subject",
+        "contact.subjectPlaceholder": "Opportunity, project, question…",
+        "contact.message": "Message",
+        "contact.messagePlaceholder": "Hi Yahya, …",
+        "contact.send": "Send message",
         "footer.text": "Designed with precision, curiosity and a spark of electricity."
       },
       onboarding: {
@@ -156,7 +184,21 @@
         "section.certifications": "الشهادات",
         "section.languages": "اللغات",
         "section.contact": "لنتواصل.",
-        "section.contactText": "لديك مشروع أو فرصة أو ترغب في الحديث عن الذكاء الاصطناعي؟ يسعدني أن تراسلني.",
+        "section.contactText": "لديك مشروع أو فرصة أو ترغب في الحديث عن الذكاء الاصطناعي؟ اترك لي رسالة وسأرد عليك بسرعة.",
+        "hero.metaLocation": "الرباط، المغرب",
+        "hero.metaApplied": "ذكاء اصطناعي تطبيقي",
+        "hero.metaProd": "منتجات قيد الإنتاج",
+        "contact.phone": "الهاتف",
+        "contact.location": "الموقع",
+        "contact.formTitle": "أرسل لي رسالة",
+        "contact.name": "الاسم",
+        "contact.namePlaceholder": "اسمك",
+        "contact.email": "البريد الإلكتروني",
+        "contact.subject": "الموضوع",
+        "contact.subjectPlaceholder": "فرصة، مشروع، سؤال…",
+        "contact.message": "الرسالة",
+        "contact.messagePlaceholder": "مرحباً يحيى، …",
+        "contact.send": "إرسال الرسالة",
         "footer.text": "صُمّم بدقة وفضول ولمسة من الكهرباء."
       },
       onboarding: {
@@ -259,6 +301,10 @@
     document.querySelectorAll("[data-i18n]").forEach((element) => {
       const value = locale.page[element.dataset.i18n];
       if (typeof value === "string") element.textContent = value;
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+      const value = locale.page[element.dataset.i18nPlaceholder];
+      if (typeof value === "string") element.placeholder = value;
     });
 
     updateOnboardingCopy();
