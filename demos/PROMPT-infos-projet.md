@@ -42,6 +42,6 @@ Consignes :
 ---
 
 ## Où le coller
-Dans `js/projects.js`, sur le projet correspondant : les champs `short`, `desc`,
-`features`, `tech`, `links` sont déjà gérés et s'affichent à côté de la démo
-(la liste `features` apparaît en puces ⚡).
+Le texte d'un projet est dans `index.html` (français, dans l'`<article>` du projet)
+et dans `js/i18n.js` (anglais et arabe, mêmes clés). `desc` va dans les paragraphes
+`.prose`, `features` dans le tableau `.facts`, `tech` dans la ligne « Stack ».

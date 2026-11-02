@@ -51,8 +51,7 @@ Tu travailles sur l'app "Forex Terminal" et sur sa version démo auto-suffisante
 
 ## Quand tu reçois la réponse
 
-1. Remplace `demos/demo.html` par le nouveau fichier (le portfolio le rechargera
-   automatiquement, j'ai mis un anti-cache).
-2. Colle le bloc d'infos (point 1) dans `js/projects.js`, dans le projet
-   **Forex Terminal** — les champs `short`, `desc`, `features`, `tech`, `links`
-   sont déjà supportés et s'affichent à côté de la démo.
+1. Remplace `demos/demo.html` par le nouveau fichier.
+2. Le texte du projet est dans `index.html` (français, `<article id="forex-terminal">`)
+   et dans `js/i18n.js` (anglais et arabe, clés `forex.*`). Reporte-y le bloc d'infos
+   du point 1.

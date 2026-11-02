@@ -38,10 +38,10 @@ CONTRAINTES TECHNIQUES OBLIGATOIRES (pour l'intégration portfolio) :
 1. Auto-suffisant : fonctionne juste en ouvrant le fichier. Aucun build, serveur, backend,
    fetch/API, variable d'env, ni localStorage.
 2. EXACTEMENT ces 4 scripts CDN dans le <head> :
-   <script src="https://cdn.tailwindcss.com"></script>
-   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/@babel/standalone@8.1.1/babel.min.js"></script>
 3. Compilation JSX en RUNTIME CLASSIQUE (sinon erreur "Cannot use import statement outside
    a module"). N'utilise PAS <script type="text/babel">. Utilise EXACTEMENT ce squelette :
 
@@ -71,11 +71,6 @@ CONTRAINTES TECHNIQUES OBLIGATOIRES (pour l'intégration portfolio) :
 ---
 ## Après réception
 1. Enregistre le fichier sous `demos/jortal.html`.
-2. Dans `js/projects.js`, sur le projet Jortal, remplace `preview: { type: "lightning" }` par :
-```js
-preview: {
-  type: "app", url: "demos/jortal.html", fakeUrl: "jortal.ma",
-  baseWidth: 1280, baseHeight: 860,
-  boot: ["$ php artisan serve", "▲ Jortal — matching emploi", "✓ moteur sémantique prêt", "→ http://127.0.0.1:8000"],
-}
-```
+2. Dans `index.html`, ajoute sur `<article id="jortal">` :
+   `data-demo="demos/jortal.html" data-demo-size="1280x860" data-demo-title="Jortal"`,
+   puis un bouton « Lancer la démo » (voir « Ajouter une démo » dans le README).

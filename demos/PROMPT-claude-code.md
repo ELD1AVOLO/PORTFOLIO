@@ -25,10 +25,10 @@ CONTRAINTES STRICTES (à respecter exactement) :
    (pas de fetch/axios/API), aucune variable d'environnement, aucun localStorage.
 
 2. TECHNO via CDN uniquement, avec EXACTEMENT ces 4 scripts dans le <head> :
-   <script src="https://cdn.tailwindcss.com"></script>
-   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/@babel/standalone@8.1.1/babel.min.js"></script>
 
 3. COMPILATION JSX EN RUNTIME CLASSIQUE (très important, sinon erreur "Cannot use import
    statement outside a module"). N'utilise PAS <script type="text/babel">. Utilise EXACTEMENT
@@ -79,36 +79,10 @@ Projet : NOM_DU_PROJET.
 
 ## 📦 Une fois que Claude Code te donne le fichier
 
-1. Enregistre-le dans le portfolio sous : `demos/NOM_DU_PROJET.html`
-   (ex : `demos/novatask.html`).
+1. Enregistre-le dans le portfolio sous `demos/NOM_DU_PROJET.html`.
 
-2. Ajoute / modifie le projet dans `js/projects.js` :
+2. Branche-le sur le projet dans `index.html` : trois attributs sur l'`<article>`
+   et un bouton « Lancer la démo ». Le détail est dans « Ajouter une démo » du README.
 
-```js
-{
-  title: "Nom du projet",
-  tag: "Web App",
-  short: "Une phrase courte. Démo jouable ⚡",
-  desc: "Description longue affichée dans la fenêtre.",
-  tech: ["React", "Tailwind", "..."],
-  links: [{ label: "Code", url: "https://github.com/toi/projet" }],
-  preview: {
-    type: "app",                       // <-- active le terminal + l'écran navigable
-    url: "demos/NOM_DU_PROJET.html",   // <-- ton fichier démo
-    fakeUrl: "monprojet.app",          // <-- texte de la barre d'adresse (déco)
-    boot: [                            // <-- lignes du terminal "run dev"
-      "$ npm run dev",
-      "▲ Vite — démarrage…",
-      "✓ compilé avec succès",
-      "→ http://localhost:3000",
-    ],
-  },
-  accent: "#4cc9f0",                   // <-- couleur des éclairs pour ce projet
-}
-```
-
-3. C'est tout. Au clic sur la carte : terminal « run dev » → puis ta démo apparaît
-   dans un cadre navigateur, et on peut naviguer dedans. ⚡
-
-> 💡 `demos/demo-sample.html` (le projet « NovaTask » d'exemple) est un modèle complet
-> et fonctionnel : ouvre-le pour voir exactement la structure attendue.
+`demos/demo-sample.html` (le projet « NovaTask » d'exemple) est un modèle complet
+et fonctionnel : ouvre-le pour voir exactement la structure attendue.

@@ -44,10 +44,10 @@ CONTRAINTES TECHNIQUES OBLIGATOIRES (pour que ça s'intègre dans mon portfolio)
 1. Auto-suffisant : fonctionne juste en ouvrant le fichier. Aucun build, serveur, backend,
    fetch/API, variable d'env, ni localStorage.
 2. EXACTEMENT ces 4 scripts CDN dans le <head> :
-   <script src="https://cdn.tailwindcss.com"></script>
-   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+   <script src="https://unpkg.com/@babel/standalone@8.1.1/babel.min.js"></script>
 3. Compilation JSX en RUNTIME CLASSIQUE (sinon erreur "Cannot use import statement outside
    a module"). N'utilise PAS <script type="text/babel">. Utilise EXACTEMENT ce squelette :
 
@@ -78,25 +78,6 @@ CONTRAINTES TECHNIQUES OBLIGATOIRES (pour que ça s'intègre dans mon portfolio)
 ---
 
 ## Quand tu reçois le fichier
-1. Enregistre-le sous `demos/autumn-ai.html`.
-2. Ajoute le projet dans `js/projects.js` :
-
-```js
-{
-  title: "Autumn AI",
-  tag: "IA · Assistant",
-  short: "Assistant IA — interface façon ChatGPT/Claude. Démo jouable ⚡",
-  desc: "…",                 // (voir le prompt 'Bloc d'infos')
-  features: ["…","…","…"],   // (idem)
-  tech: ["Java", "…"],
-  links: [{ label: "Code", url: "https://github.com/…" }],
-  preview: {
-    type: "app",
-    url: "demos/autumn-ai.html",
-    fakeUrl: "autumn-ai.app",
-    baseWidth: 1280, baseHeight: 860,   // un chat se voit bien à cette taille
-    boot: ["$ ./gradlew run", "▲ Autumn AI — démarrage…", "✓ modèle chargé", "→ prêt"],
-  },
-  accent: "#ff9d4d",   // un orange "automne" par ex.
-}
-```
+1. Enregistre-le sous `demos/demo_automn.html` (le fichier que le portfolio utilise déjà).
+2. Rien d'autre à brancher : le projet AUTOM pointe déjà dessus dans `index.html`.
+   Pour refaire la capture d'écran, voir « Ajouter une démo » dans le README.
