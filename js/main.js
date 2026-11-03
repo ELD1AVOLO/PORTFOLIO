@@ -138,6 +138,108 @@
     });
   }
 
+  /* ---------- Statut sous le nom : change toutes les 7 secondes ---------- */
+  // Le suivant descend du haut, l'actuel sort par le bas. Pause au survol, quand
+  // l'onglet est caché ou quand l'intro n'est plus à l'écran.
+  const roles = document.querySelector(".roles");
+  if (roles) {
+    const items = [...roles.querySelectorAll(".roles__item")];
+    const SWITCH_EVERY = 7000;
+    let index = Math.max(0, items.findIndex((item) => item.classList.contains("is-current")));
+    let timer = null;
+    let onScreen = true;
+    let hovered = false;
+
+    const showNext = () => {
+      const from = items[index];
+      index = (index + 1) % items.length;
+      const to = items[index];
+      from.classList.remove("is-current");
+      to.classList.add("is-current");
+      if (!to.animate) return;
+      const timing = { duration: 650, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" };
+      from.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(100%)", opacity: 0 }], timing);
+      to.animate([{ transform: "translateY(-100%)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], timing);
+    };
+    const schedule = () => {
+      clearInterval(timer);
+      timer = !document.hidden && onScreen && !hovered ? setInterval(showNext, SWITCH_EVERY) : null;
+    };
+    const line = roles.closest(".intro__role");
+    line.addEventListener("pointerenter", () => { hovered = true; schedule(); });
+    line.addEventListener("pointerleave", () => { hovered = false; schedule(); });
+    document.addEventListener("visibilitychange", schedule);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; schedule(); }).observe(roles);
+    }
+    schedule();
+  }
+
+  /* ---------- Marque-page : le ruban suit la lecture ---------- */
+  // Son bout descend quand on descend et remonte quand on remonte. Sur grand écran,
+  // il s'arrête en face de la section en cours, dans la marge ; sur mobile, c'est
+  // une simple jauge de lecture.
+  const ribbon = document.querySelector(".ribbon");
+  const marginLinks = [...document.querySelectorAll(".margin-nav a")];
+  const marginSections = marginLinks.map((link) => document.querySelector(link.getAttribute("href")));
+  const wideScreen = window.matchMedia("(min-width: 64rem)");
+  let ribbonQueued = false;
+
+  function placeRibbon() {
+    ribbonQueued = false;
+    if (!ribbon) return;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    let end;
+    let current = -1;
+    if (wideScreen.matches && marginLinks.length) {
+      // Milieu de chaque lien de la marge, en pixels depuis le haut de l'écran
+      const marks = marginLinks.map((link) => {
+        const box = link.getBoundingClientRect();
+        return box.top + box.height / 2;
+      });
+      const reading = scrollY + innerHeight * 0.3; // la ligne de lecture
+      const tops = marginSections.map((section) => section.getBoundingClientRect().top + scrollY);
+      if (scrollY >= maxScroll - 2) {
+        current = marks.length - 1;
+        end = marks[current];
+      } else if (reading < tops[0]) {
+        end = marks[0] * Math.max(0.35, reading / tops[0]);
+      } else {
+        current = tops.findLastIndex((top) => top <= reading);
+        const next = tops[current + 1] ?? document.documentElement.scrollHeight;
+        const through = Math.min(1, (reading - tops[current]) / Math.max(1, next - tops[current]));
+        end = marks[current] + through * ((marks[current + 1] ?? marks[current]) - marks[current]);
+      }
+      end += 12; // le bout dépasse un peu le lien
+    } else {
+      end = 48 + (scrollY / maxScroll) * innerHeight * 0.35;
+    }
+    ribbon.style.setProperty("--ribbon-h", `${Math.round(end)}px`);
+    marginLinks.forEach((link, i) => {
+      if (i === current) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  const queueRibbon = () => {
+    if (ribbonQueued) return;
+    ribbonQueued = true;
+    requestAnimationFrame(placeRibbon);
+  };
+  window.addEventListener("scroll", queueRibbon, { passive: true });
+  window.addEventListener("resize", queueRibbon);
+  wideScreen.addEventListener?.("change", queueRibbon);
+  document.addEventListener("site:language", queueRibbon);
+  if (ribbon) {
+    // Le ruban se déroule une fois à l'arrivée, puis suit le défilement sans délai.
+    const unroll = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (unroll) ribbon.classList.add("is-unrolling");
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      placeRibbon();
+      if (unroll) setTimeout(() => ribbon.classList.remove("is-unrolling"), 1200);
+    }));
+  }
+
   /* ---------- Démos plein écran ---------- */
   // Chaque projet avec démo porte data-demo (fichier) et data-demo-size (ex. "1600x920").
   // La démo est rendue à cette taille puis réduite pour tenir dans la fenêtre.

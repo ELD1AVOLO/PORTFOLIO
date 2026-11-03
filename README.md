@@ -25,6 +25,9 @@ pour ouvrir directement l'anglais ou l'arabe.
 | Démos jouables | `demos/` |
 | Diapositives d'accueil | `js/welcome.js` (texte dans `index.html`, `<dialog id="welcome">`) |
 | Logos des entreprises | `assets/logos/` (classes `.logo--…` dans `css/style.css`) |
+| Statuts qui défilent sous le nom | `index.html` (`.roles`), minuterie dans `js/main.js` |
+| Décor du cahier, ruban, navigation de la marge | `index.html` (`.notebook`, `.ribbon`, `.margin-nav`), `css/style.css` |
+| La page qui s'écrit à côté de l'intro (grand écran) | `js/inkpad.js` (scènes dans `SCENES`, dessins dans `DOODLES`) |
 
 ## Modifier un texte
 
@@ -76,10 +79,17 @@ aux deux largeurs (par exemple avec squoosh.app) en gardant les mêmes noms de f
 
 ## Accueil
 
-À la première visite, trois diapositives : la langue, le profil du visiteur (avec
-un prénom facultatif), puis un point de départ adapté à ce profil. Les réponses
-restent dans le navigateur (`localStorage`, clé `site-visitor`). Le prénom sert à
-saluer le visiteur en haut de page et à pré-remplir le formulaire de contact.
+À la première visite, une petite feuille arrachée au cahier se pose au milieu de la
+page, qu'on devine derrière, floutée comme dans la brume. Elle porte trois
+diapositives : la langue, le profil du visiteur (avec un prénom facultatif), puis un
+point de départ adapté à ce profil. Les réponses restent dans le navigateur
+(`localStorage`, clé `site-visitor`). Le prénom sert à saluer le visiteur en haut de
+page et à pré-remplir le formulaire de contact.
+
+Le papier est le `::before` de `.welcome__sheet` : lignes, marge rouge et bord déchiré
+du côté de la spirale (masque `--torn`, un trou arraché par ligne). Les couleurs sont
+les jetons `--sheet`, `--sheet-shadow` et `--fog` (la brume). Les diapositives sont
+superposées, donc la feuille garde la même taille de l'une à l'autre.
 
 Le lien « Revoir l'introduction » du pied de page rouvre l'accueil. Il ne s'affiche
 pas quand l'adresse vise une section (`#contact`, `#projects`…) ou contient
@@ -101,12 +111,55 @@ clair en mode sombre. Pour en ajouter un :
    `--ratio` est la largeur divisée par la hauteur du fichier, `--h` la hauteur affichée.
 3. Dans `index.html` : `<span class="logo logo--nom"></span>`.
 
+## Statuts sous le nom
+
+Trois statuts se relaient toutes les 7 secondes (`SWITCH_EVERY` dans `js/main.js`) :
+le suivant descend du haut et l'actuel sort par le bas. Le défilement s'arrête au
+survol, quand l'onglet est caché ou quand l'intro n'est plus à l'écran. Pour changer
+un statut : le texte dans `index.html` (`.roles__item`), puis les clés `hero.role1` à
+`hero.role3` dans `js/i18n.js`, sans oublier `hero.rolesAll`, la version que lisent
+les lecteurs d'écran.
+
+## Cahier et marque-page
+
+Le fond est une page de cahier : les lignes sont le fond du `body`, la marge rouge,
+la spirale et le bord de la page d'en face sont dans `<div class="notebook">`. Les
+couleurs sont les jetons `--ruled`, `--margin-line`, `--paper-edge` et `--ribbon…`
+de `css/style.css`, les largeurs `--facing`, `--bind` et `--page-start`.
+
+Sur grand écran, la navigation est dans la marge : le ruban descend quand on descend,
+remonte quand on remonte, et s'arrête en face de la section en cours. Sur mobile, le
+ruban sert de jauge de lecture et la navigation reste en haut de page.
+
+## La page qui s'écrit
+
+À partir de 1200 px de large, l'espace libre à droite de l'intro est une page où
+quelqu'un écrit, comme le journal de Tom Jedusor dans Harry Potter : citations, mots,
+formules, dessins d'enfant. Chaque scène a son écriture (sept polices manuscrites de
+Google Fonts, chargées seulement quand l'animation tourne), sa couleur et son outil :
+stylo plume, crayon de papier, craie grasse, ou une main invisible. Puis tout
+s'efface, à la gomme ou parce que l'encre s'enfonce dans la page.
+
+- Une scène est un objet de `SCENES` dans `js/inkpad.js`. Dans une ligne, une partie
+  `["pence", "pense"]` fait se tromper l'auteur : il écrit la faute, s'arrête,
+  l'efface et corrige.
+- Les dessins sont des listes de traits dans `DOODLES`, en coordonnées sur 100.
+- `en: {…}` et `ar: {…}` dans une ligne remplacent ce qui change quand la page est en
+  anglais ou en arabe.
+- `?ink=4` dans l'adresse commence à la scène n° 4, pour en regarder une précise.
+
+L'animation s'arrête quand la page n'est plus à l'écran, quand l'onglet est caché ou
+quand une fenêtre est ouverte (accueil, démo). Si le thème change, elle passe à la
+scène suivante pour que l'encre reste lisible.
+
 ## Animations
 
 Tout le monde a des fondus (entrée de l'intro, apparition des sections au défilement,
 changement de thème ou de langue). Les mouvements (montée, glissement des
-diapositives, filet qui se trace sous les titres) ne s'ajoutent que si le système n'a
-pas demandé moins d'animations (`prefers-reduced-motion`). Sans JavaScript, tout le
+diapositives, feuille d'accueil qui se pose, filet qui se trace sous les titres) ne
+s'ajoutent que si le système n'a pas demandé moins d'animations
+(`prefers-reduced-motion`). Deux exceptions, voulues : la descente des statuts sous le
+nom et la page qui s'écrit, qui jouent pour tout le monde. Sans JavaScript, tout le
 contenu reste visible.
 
 ## Déploiement
@@ -123,6 +176,7 @@ css/style.css
 js/i18n.js        textes anglais et arabes
 js/main.js        langue, thème, animations, démos, formulaire
 js/welcome.js     diapositives d'accueil
+js/inkpad.js      la page qui s'écrit à côté de l'intro (grand écran)
 assets/           CV, captures, logos, favicon, image d'aperçu
 demos/            démos jouables et notes PROMPT-*.md
 ```

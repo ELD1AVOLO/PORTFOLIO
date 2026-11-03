@@ -10,8 +10,8 @@
 window.SITE_I18N = {
   strings: {
     en: {
-      "meta.title": "Yahya Elmoussaif · AI engineer and data scientist",
-      "meta.description": "AI engineer and data scientist in Rabat. Forex prediction platform deployed at Attijariwafa Bank, the AUTOM agent, the Texara LaTeX editor.",
+      "meta.title": "Yahya Elmoussaif · AI engineer, PhD student at ENSIAS",
+      "meta.description": "AI engineer and first-year PhD student at ENSIAS in Rabat. Thesis on RAG for medical simulation; Forex platform deployed at Attijariwafa Bank.",
       "skip": "Skip to content",
       "nav.label": "Sections",
       "nav.projects": "Projects",
@@ -22,10 +22,13 @@ window.SITE_I18N = {
       "lang.label": "Language",
       "theme.label": "Dark theme",
 
-      "hero.role": "AI engineer and data scientist",
+      "hero.rolesAll": "AI engineer and data scientist, AI PhD student at ENSIAS, full-stack developer",
+      "hero.role1": "AI engineer and data scientist",
+      "hero.role2": "AI PhD student at ENSIAS",
+      "hero.role3": "Full-stack developer",
       "hero.p1": "I like building end to end: collecting and cleaning the data, training and deploying the models (classic ML, NLP, LLMs), then shipping a polished web interface on top.",
-      "hero.p2": "My latest project is a platform that predicts the direction of 18 currency pairs from financial news. It was deployed on Attijariwafa Bank’s trading floor.",
-      "hero.status": "Open to AI opportunities",
+      "hero.p2": "I’m in the first year of a PhD at ENSIAS, in Rabat. My thesis is titled <cite lang=\"en\">Retrieval-Augmented Generative AI for Knowledge-Grounded Medical Simulation</cite>.",
+      "hero.p3": "Before that, I built a platform that predicts the direction of 18 currency pairs from financial news. It was deployed on Attijariwafa Bank’s trading floor.",
       "hero.city": "Rabat, Morocco",
       "hero.langs": "French, English, Arabic",
       "hero.contact": "Get in touch",
@@ -115,6 +118,9 @@ window.SITE_I18N = {
       "skills.v7": "supervised and unsupervised ML, deep learning, feature engineering, EDA and data cleaning, Agile/Scrum, TDD, SOLID, design patterns",
 
       "education.title": "Education",
+      "edu0.degree": "PhD, first year",
+      "edu0.date": "Since 2026",
+      "edu0.text": "Thesis: <cite lang=\"en\">Retrieval-Augmented Generative AI for Knowledge-Grounded Medical Simulation</cite>.",
       "edu1.degree": "Engineering degree in artificial intelligence and big data",
       "edu2.school": "Lycée Moulay Youssef",
       "edu2.degree": "Baccalaureate in physical sciences",
@@ -182,8 +188,8 @@ window.SITE_I18N = {
     },
 
     ar: {
-      "meta.title": "Yahya Elmoussaif · مهندس ذكاء اصطناعي وعالم بيانات",
-      "meta.description": "مهندس ذكاء اصطناعي وعالم بيانات في الرباط. منصة لتوقع اتجاه أزواج العملات نُشرت لدى التجاري وفا بنك، ووكيل AUTOM، ومحرر LaTeX المسمى Texara.",
+      "meta.title": "Yahya Elmoussaif · مهندس ذكاء اصطناعي، طالب دكتوراه في ENSIAS",
+      "meta.description": "مهندس ذكاء اصطناعي وطالب دكتوراه في سنته الأولى بـ ENSIAS في الرباط. أطروحة حول RAG للمحاكاة الطبية، ومنصة فوركس نُشرت لدى التجاري وفا بنك.",
       "skip": "انتقل إلى المحتوى",
       "nav.label": "الأقسام",
       "nav.projects": "المشاريع",
@@ -194,10 +200,13 @@ window.SITE_I18N = {
       "lang.label": "اللغة",
       "theme.label": "الوضع الداكن",
 
-      "hero.role": "مهندس ذكاء اصطناعي وعالم بيانات",
+      "hero.rolesAll": "مهندس ذكاء اصطناعي وعالم بيانات، طالب دكتوراه في الذكاء الاصطناعي بـ ENSIAS، مطوّر Full-stack",
+      "hero.role1": "مهندس ذكاء اصطناعي وعالم بيانات",
+      "hero.role2": "طالب دكتوراه في الذكاء الاصطناعي بـ ENSIAS",
+      "hero.role3": "مطوّر Full-stack",
       "hero.p1": "أحب أن أبني المشروع من أوله إلى آخره: جمع البيانات وتنظيفها، وتدريب النماذج ونشرها (تعلّم الآلة الكلاسيكي، ومعالجة اللغة الطبيعية، والنماذج اللغوية الكبيرة)، ثم بناء واجهة ويب متقنة فوق كل ذلك.",
-      "hero.p2": "آخر مشاريعي منصة تتوقع اتجاه 18 زوجاً من العملات انطلاقاً من الأخبار المالية. وقد نُشرت في قاعة التداول لدى التجاري وفا بنك.",
-      "hero.status": "متاح لفرص في مجال الذكاء الاصطناعي",
+      "hero.p2": "أنا في السنة الأولى من الدكتوراه في ENSIAS بالرباط. عنوان أطروحتي: <cite lang=\"en\" dir=\"ltr\">Retrieval-Augmented Generative AI for Knowledge-Grounded Medical Simulation</cite>",
+      "hero.p3": "قبل ذلك، بنيت منصة تتوقع اتجاه 18 زوجاً من العملات انطلاقاً من الأخبار المالية. وقد نُشرت في قاعة التداول لدى التجاري وفا بنك.",
       "hero.city": "الرباط، المغرب",
       "hero.langs": "الفرنسية، الإنجليزية، العربية",
       "hero.contact": "تواصل معي",
@@ -287,6 +296,9 @@ window.SITE_I18N = {
       "skills.v7": "التعلّم المُراقَب وغير المُراقَب، التعلّم العميق، هندسة الخصائص، التحليل الاستكشافي وتنظيف البيانات، Agile/Scrum، TDD، SOLID، أنماط التصميم",
 
       "education.title": "التكوين",
+      "edu0.degree": "دكتوراه، السنة الأولى",
+      "edu0.date": "منذ 2026",
+      "edu0.text": "الأطروحة: <cite lang=\"en\" dir=\"ltr\">Retrieval-Augmented Generative AI for Knowledge-Grounded Medical Simulation</cite>",
       "edu1.degree": "دبلوم مهندس في الذكاء الاصطناعي والبيانات الضخمة",
       "edu2.school": "ثانوية مولاي يوسف",
       "edu2.degree": "بكالوريا العلوم الفيزيائية",

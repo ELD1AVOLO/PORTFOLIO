@@ -1,5 +1,6 @@
 /* =====================================================================
-   welcome.js — diapositives d'accueil, à la première visite :
+   welcome.js — diapositives d'accueil, à la première visite, sur une petite
+   feuille arrachée au cahier, posée au milieu de la page :
    1. la langue, 2. qui visite (et un prénom facultatif), 3. par où commencer.
    Les réponses restent dans le navigateur (localStorage « site-visitor ») :
    elles servent à saluer le visiteur et à pré-remplir le formulaire de contact.
@@ -20,7 +21,6 @@
 
   const slides = [...dialog.querySelectorAll("[data-slide]")];
   const bars = [...dialog.querySelectorAll(".welcome__progress span")];
-  const count = dialog.querySelector(".welcome__count");
   const back = dialog.querySelector("[data-welcome-back]");
   const next = dialog.querySelector("[data-welcome-next]");
   const enter = dialog.querySelector("[data-welcome-enter]");
@@ -71,9 +71,12 @@
     dialog.querySelectorAll("[data-role]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.role === value));
     });
+    showForRole();
   }
 
-  // Diapositive 3 : texte et boutons selon le profil (« curieux » par défaut)
+  // Diapositive 3 : texte et boutons selon le profil (« curieux » par défaut).
+  // Les diapositives sont superposées : sans ce tri, la 3e, avec tous ses textes,
+  // donnerait sa hauteur à la feuille.
   function showForRole() {
     const profile = role || "curious";
     dialog.querySelectorAll("[data-for]").forEach((element) => {
@@ -87,7 +90,6 @@
       bar.classList.toggle("is-current", i === index);
       bar.classList.toggle("is-done", i < index);
     });
-    count.textContent = `${index + 1} / ${slides.length}`;
     back.hidden = index === 0;
     next.hidden = index === slides.length - 1;
     enter.hidden = index !== slides.length - 1;
@@ -100,7 +102,6 @@
     const to = slides[index];
     const forward = index > current;
     current = index;
-    if (index === slides.length - 1) showForRole();
     updateChrome(index);
 
     const show = () => {
@@ -139,7 +140,6 @@
     markLanguage();
     current = index;
     slides.forEach((slide, i) => { slide.hidden = i !== index; });
-    if (index === slides.length - 1) showForRole();
     updateChrome(index);
     dialog.showModal();
   }
